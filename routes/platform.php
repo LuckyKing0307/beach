@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Orchid\Screens\AdminConfigs;
 use App\Orchid\Screens\Examples\ExampleActionsScreen;
 use App\Orchid\Screens\Examples\ExampleCardsScreen;
 use App\Orchid\Screens\Examples\ExampleChartsScreen;
@@ -67,6 +68,9 @@ Route::screen('users', UserListScreen::class)
 // Platform > TelegramUsers
 Route::screen('telegram-users', TelegramUser::class)
     ->name('platform.tg-users');
+// Platform > Admin
+Route::screen('admin-configs', AdminConfigs::class)
+    ->name('platform.tg-admin');
 
 // Platform > System > Roles > Role
 Route::screen('roles/{role}/edit', RoleEditScreen::class)

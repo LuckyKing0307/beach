@@ -10,4 +10,15 @@ class TelegramUser extends Model
 {
     use HasFactory, AsSource;
 
+    protected $fillable = [
+        'id',
+        'user_id',
+        'first_name',
+        'username',
+        'language',
+        'active',
+        'block',
+        'on_chat'
+    ];
+
 }

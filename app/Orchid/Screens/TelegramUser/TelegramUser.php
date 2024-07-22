@@ -2,7 +2,11 @@
 
 namespace App\Orchid\Screens\TelegramUser;
 
+use App\Orchid\Layouts\TelegramUsers\TelegramUsersTable;
 use Orchid\Screen\Screen;
+use Orchid\Screen\Sight;
+use Orchid\Support\Facades\Layout;
+use App\Models\TelegramUser as TelegramUserModel;
 
 class TelegramUser extends Screen
 {
@@ -13,7 +17,14 @@ class TelegramUser extends Screen
      */
     public function query(): iterable
     {
-        return [];
+//        return [
+//            'user' => User::firstOrFail(),
+//        ];
+
+        return [
+            'telegram_users' => TelegramUserModel::paginate(10),
+            'user' => TelegramUserModel::firstOrFail(),
+        ];
     }
 
     /**
@@ -33,7 +44,12 @@ class TelegramUser extends Screen
      */
     public function commandBar(): iterable
     {
-        return [];
+        return [
+//            ModalToggle::make('Open User')
+//                ->modal('user')
+//                ->method('create')
+//                ->icon('plus'),
+            ];
     }
 
     /**
@@ -43,6 +59,28 @@ class TelegramUser extends Screen
      */
     public function layout(): iterable
     {
-        return [];
+        return [
+            TelegramUsersTable::class,
+            Layout::modal('taskModal',
+                Layout::legend('user', [
+                    Sight::make('id'),
+                    Sight::make('username'),
+                    Sight::make('first_name'),
+                    Sight::make('language'),
+                    Sight::make('block')
+                        ->render(function (TelegramUserModel $user) {
+                            $active = $user->block ? 'Blocked' : 'Not Blocked';
+                            return $active;
+                        }),
+                ]))->async('asyncGetUser'),
+//            Layout::view('realtimechat'),
+        ];
+    }
+
+    public function asyncGetUser(TelegramUserModel $user): array
+    {
+        return [
+            'user' => $user
+        ];
     }
 }

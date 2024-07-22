@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Telegram\Bot\Api;
+use Telegram\Bot\Laravel\Facades\Telegram;
+use App\Models\AdminConfigs as Configs;
 
 class BotController extends Controller
 {
-    protected $telegram;
+    protected Api $telegram;
+    protected Telegram $telegramAPI;
 
     /**
      * Create a new controller instance.
@@ -17,6 +20,7 @@ class BotController extends Controller
     public function __construct(Api $telegram)
     {
         $this->telegram = $telegram;
+        $this->telegramAPI = new Telegram;
     }
 
     /**
@@ -30,19 +34,33 @@ class BotController extends Controller
     }
 
     /**
-     * Show the bot information.
+     * Update telegram message.
      */
     public function updates()
     {
-        $updates = collect($this->telegram->getUpdates())->last();
-        $userMessage = $updates->getMessage()->getText();
-        $fromUser = $updates->getChat()->getId();
-
-        $response = $this->telegram->sendMessage([
-            'chat_id' => $fromUser,
-            'text' => $userMessage
-        ]);
-
-        return $response;
+        $updates = '';
+        while (true){
+            try {
+                $updates = $this->telegramAPI::commandsHandler(false);
+                foreach ($updates as $update) {
+                    if ($update->isType('callback_query')){
+                        $callback = new CallBackController($update->callback_query, $this->telegramAPI);
+                        $callback->store();
+                    }if (!isset($update->entities) and $update->isType('message')){
+                        $menu = new MenuController($update->message, $this->telegramAPI);
+                        $menu->isMenuExists();
+                    }
+                }
+            }catch (\Exception $e){
+                $updates = $e->getMessage();
+            }
+       }
     }
 }
+
+
+
+
+
+
+
