@@ -20,11 +20,11 @@ class MenuController extends Controller
         $this->telegram = $telegram;
     }
 
-    public function isMenuExists()
+    public function isMenuExists($text)
     {
-        $user = TelegramUser::where(['user_id' => $this->request->from?->id])->first();
+        $user = TelegramUser::where(['user_id' => $this->request->chat?->id])->first();
         $menuFields = [];
-        $config = AdminConfigs::where('trigger_'.$user->language, $this->request->text)->first();
+        $config = AdminConfigs::where('trigger_'.$user->language, $text)->first();
         if ($user and $config->type!='section_item'){
             $menuData = json_decode($config->data);
             $menuFields['id'] = $user->user_id;
@@ -37,8 +37,8 @@ class MenuController extends Controller
 
             $this->sendMenu($menuFields);
         }
+        var_dump($config->type.'asdasd');
         if ($config->type==='section_item'){
-            var_dump($config->type);
             $menuData = json_decode($config->data);
             $menuFields['id'] = $user->user_id;
             $menuFields['text'] = $menuData->text->{$user->language};
@@ -81,33 +81,27 @@ class MenuController extends Controller
             'menu' => ['en'=>'Menu','bg'=>'Меню'],
             'help' => ['en'=>'Help','bg'=>'Помогне'],
         ];
+        $menuItemFields = [
+            'item_id' => $menuFields['item_id'],
+            'language' => $menuFields['language'],
+        ];
         $reply_markup = Keyboard::make()->inline()
             ->setResizeKeyboard(false)
             ->setOneTimeKeyboard(true)
             ->row([
-                Keyboard::button(['text' => $itemMenu['photo'][$menuFields['language']], 'callback_data' => json_encode($menuFields)]),
-                Keyboard::button(['text' => $itemMenu['price'][$menuFields['language']], 'callback_data' => json_encode($menuFields)]),
-                Keyboard::button(['text' => $itemMenu['booking'][$menuFields['language']], 'callback_data' => json_encode($menuFields)]),
+                Keyboard::button(['text' => $itemMenu['photo'][$menuFields['language']], 'callback_data' => json_encode(array_merge($menuItemFields, ['type'=>'photo']))]),
+                Keyboard::button(['text' => $itemMenu['price'][$menuFields['language']], 'callback_data' => json_encode(array_merge($menuItemFields, ['type'=>'price']))]),
+                Keyboard::button(['text' => $itemMenu['booking'][$menuFields['language']], 'callback_data' => json_encode(array_merge($menuItemFields, ['type'=>'booking']))]),
             ])->row([
-                Keyboard::button(['text' => $itemMenu['menu'][$menuFields['language']], 'callback_data' => json_encode($menuFields)]),
-                Keyboard::button(['text' => $itemMenu['help'][$menuFields['language']], 'callback_data' => json_encode($menuFields)]),
-            ]);
-        $reply_markup2 = Keyboard::make()
-            ->setResizeKeyboard(false)
-            ->setOneTimeKeyboard(true)
-            ->row([
-                Keyboard::button(['text' => 'help']),
-                Keyboard::button(['text' => 'menu']),
+                Keyboard::button(['text' => $itemMenu['menu'][$menuFields['language']], 'callback_data' => 'menu']),
+                Keyboard::button(['text' => $itemMenu['help'][$menuFields['language']], 'callback_data' => json_encode(['function'=>'help'])]),
             ]);
         $messageData = [
             'chat_id' => $menuFields['id'],
-            'caption' => $menuFields['text'],
+            'text' => $menuFields['text'],
             'reply_markup' => $reply_markup,
         ];
-        if (strlen($config->photo)<5){
-            $messageData['photo'] = new InputFile('http://127.0.0.1:8000'.$config->attachment()->first()?->getRelativeUrlAttribute());
-        }
-        $message = $this->telegram::sendPhoto($messageData);
+        $message = $this->telegram::sendMessage($messageData);
         var_dump($message->getMessageId());
     }
 

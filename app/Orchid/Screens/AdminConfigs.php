@@ -74,6 +74,7 @@ class AdminConfigs extends Screen
 
     public function asyncGetConfig(AdConfigs $config): array
     {
+        var_dump($config->data);
         $data = json_decode($config->data, 1);
         if ($config->type==='section_item'){
             $configDb = [
@@ -186,13 +187,7 @@ class AdminConfigs extends Screen
         foreach ($request->input('trigger.fields') as $trigger) {
             $configGet = AdConfigs::where(['name' => $trigger['en']]);
             if (!$configGet->exists()) {
-                $data = [
-                    'price' => [
-                        ['time' => 1, 'price' => 5],
-                        ['time' => 2, 'price' => 10],
-                        ['time' => 24, 'price' => 100]
-                    ]
-                ];
+                $data = [];
                 $sections = AdConfigs::create([
                     'name' => $trigger['en'],
                     'function' => '',
@@ -200,7 +195,7 @@ class AdminConfigs extends Screen
                     'trigger_bg' => $trigger['bg'],
                     'type' => 'section_item',
                     'fields' => '[]',
-                    'data' => $data,
+                    'data' => json_encode($data),
                 ]);
             }else{
                 $sections = $configGet->get()->first();

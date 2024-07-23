@@ -45,10 +45,16 @@ class BotController extends Controller
                 foreach ($updates as $update) {
                     if ($update->isType('callback_query')){
                         $callback = new CallBackController($update->callback_query, $this->telegramAPI);
-                        $callback->store();
+                        if ($update->callback_query->data==='menu'){
+                            $menu = new MenuController($update->callback_query->message, $this->telegramAPI);
+                            $menu->isMenuExists($update->callback_query->data);
+                        }else{
+                            $callback->store();
+                        }
+                        $callback->closeCallback();
                     }if (!isset($update->entities) and $update->isType('message')){
                         $menu = new MenuController($update->message, $this->telegramAPI);
-                        $menu->isMenuExists();
+                        $menu->isMenuExists($update->message->text);
                     }
                 }
             }catch (\Exception $e){
