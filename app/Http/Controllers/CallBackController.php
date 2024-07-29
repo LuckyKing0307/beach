@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\AdminConfigs;
+use App\Models\Booking;
 use App\Models\TelegramUser;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use mysql_xdevapi\Exception;
 use Telegram\Bot\FileUpload\InputFile;
 use Telegram\Bot\Keyboard\Keyboard;
+use Telegram\Bot\Laravel\Facades\Telegram;
 use Telegram\Bot\Laravel\Facades\Telegram as TelegramBot;
 
 class CallBackController extends Controller
@@ -28,14 +31,20 @@ class CallBackController extends Controller
 
         if (isset($data['function'])){
             $function = $data['function'];
-            $send = self::$function($this->request);
+            self::$function($this->request);
             return $function;
         }
         if (isset($data["item_id"])){
             $data['user_id'] = $this->request->message->chat->id;
             $function = $data['type'].'Send';
 
-            $send = self::$function($data);
+            self::$function($data);
+            return $data;
+        }
+        if (isset($data["type"]) and $data["type"]=='booking_day'){
+            $data['user_id'] = $this->request->message->chat->id;
+            $function = $data['type'];
+            self::$function($data);
             return $data;
         }
         return true;
@@ -48,6 +57,8 @@ class CallBackController extends Controller
     {
         $data = json_decode($request->data,1);
         $this->telegramUser->setLang($data['value']);
+        $menu = new MenuController($request->message, $this->telegram);
+        $menu->isMenuExists('menu');
         return $this->request;
     }
 
@@ -114,8 +125,6 @@ class CallBackController extends Controller
             foreach ($data['price'] as $price){
                 $price_text .= "{$price['time']}h - {$price['price']}\n";
             }
-
-            var_dump($price_text);
             $messageData = [
                 'chat_id' => $request['user_id'],
                 'reply_markup' => $reply_markup,
@@ -127,12 +136,80 @@ class CallBackController extends Controller
     }
 
 
-    protected function bookingSend()
+    protected function booking_day($request)
     {
+        $text = [
+            'bg' => 'Ваша заявка принята',
+            'en' => 'We have booked your request',
+        ];
+        $booking = Booking::find($request['id']);
+        $user = TelegramUser::where(['user_id' => $booking->user_id])->get()->first();
+        if ($booking->exists()){
+            $booking->day = $request['day'];
+        }
+        $booking->save();
 
+        $messageData = [
+            'chat_id' => $booking->user_id,
+            'text' => $text[$user->language],
+        ];
+        Telegram::sendMessage($messageData);
     }
-    public function help()
+
+
+    protected function bookingSend($request)
     {
-        return 'asd';
+        $booking = Booking::where([
+            'user_id' => $this->request->message->chat?->id,
+            'item_id' => $request['item_id'],
+            'day' => null,
+        ]);
+        if ($booking->exists()){
+            $booking = $booking->get()->first();
+        }else{
+            $booking = Booking::create([
+                'user_id' => $this->request->message->chat?->id,
+                'item_id' => $request['item_id'],
+            ]);
+        }
+        $currentDate = Carbon::now();
+        $endOfMonth = $currentDate->copy()->endOfMonth();
+        $daysLeft = $endOfMonth->diffInDays($currentDate->toDate());
+        $remainingDays = [];
+        for ($i = 0; $i <= intval($daysLeft)*(-1); $i++) {
+            if ($i!=0){
+                $days = [];
+                $days['id'] = $booking->id;
+                $days['type'] = 'booking_day';
+                $days['day'] = $currentDate->copy()->addDays($i)->toDate()->format('d');
+                $remainingDays['fields'][] = $days;
+            }
+        }
+        $remainingDays['id'] = $this->request->message->chat?->id;
+        $remainingDays['text'] = 'Booking';
+        $menu = new MenuController($this->request->message, $this->telegram);
+        $menu->sendInlineMenu($remainingDays);
+    }
+    public function help($request)
+    {
+        $user = TelegramUser::where(['user_id' => $request->message->chat?->id])->get()->first();
+        $user->on_chat = 1;
+        $user->save();
+
+        $itemMenu = [
+            'menu' => ['en'=>'Menu','bg'=>'Меню'],
+        ];
+        $reply_markup = Keyboard::make()->inline()
+            ->setResizeKeyboard(false)
+            ->setOneTimeKeyboard(true)
+            ->row([
+                Keyboard::button(['text' => $itemMenu['menu'][$user->language], 'callback_data' => 'menu']),
+            ]);
+        $messageData = [
+            'chat_id' => $request->message->chat?->id,
+            'reply_markup' => $reply_markup,
+            'text' => 'Вы открыли чат с администратором'
+        ];
+        $this->telegram::sendMessage(($messageData));
     }
 }

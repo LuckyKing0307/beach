@@ -22,6 +22,7 @@ class MenuController extends Controller
 
     public function isMenuExists($text)
     {
+        var_dump('asdasd');
         $user = TelegramUser::where(['user_id' => $this->request->chat?->id])->first();
         $menuFields = [];
         $config = AdminConfigs::where('trigger_'.$user->language, $text)->first();
@@ -37,7 +38,6 @@ class MenuController extends Controller
 
             $this->sendMenu($menuFields);
         }
-        var_dump($config->type.'asdasd');
         if ($config->type==='section_item'){
             $menuData = json_decode($config->data);
             $menuFields['id'] = $user->user_id;
@@ -61,6 +61,31 @@ class MenuController extends Controller
             }
             if (gettype($field)!='array'){
                 $keysBoards[] = Keyboard::button($field);
+            }
+        }
+
+        $reply_markup = $this->addRows($reply_markup, $keysBoards);
+
+        $message = $this->telegram::sendMessage([
+            'chat_id' => $menuFields['id'],
+            'text' => $menuFields['text'],
+            'reply_markup' => $reply_markup
+        ]);
+    }
+
+    public function sendInlineMenu($menuFields)
+    {
+        $keysBoards = [];
+        $reply_markup = Keyboard::make()->inline()
+            ->setResizeKeyboard(true)
+            ->setOneTimeKeyboard(true);
+        foreach ($menuFields['fields'] as $field){
+            if (count($keysBoards)==3){
+                $reply_markup = $this->addRows($reply_markup, $keysBoards);
+                $keysBoards = [];
+            }
+            if (gettype($field['day'])!='array'){
+                $keysBoards[] = Keyboard::button(['text' => $field['day'], 'callback_data' => json_encode($field)]);
             }
         }
 

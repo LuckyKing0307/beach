@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Orchid\Screens\AdminConfigs;
+use App\Orchid\Screens\BookingScreen;
 use App\Orchid\Screens\Examples\ExampleActionsScreen;
 use App\Orchid\Screens\Examples\ExampleCardsScreen;
 use App\Orchid\Screens\Examples\ExampleChartsScreen;
@@ -12,6 +13,7 @@ use App\Orchid\Screens\Examples\ExampleGridScreen;
 use App\Orchid\Screens\Examples\ExampleLayoutsScreen;
 use App\Orchid\Screens\Examples\ExampleScreen;
 use App\Orchid\Screens\Examples\ExampleTextEditorsScreen;
+use App\Orchid\Screens\MessageScreen;
 use App\Orchid\Screens\PlatformScreen;
 use App\Orchid\Screens\Role\RoleEditScreen;
 use App\Orchid\Screens\Role\RoleListScreen;
@@ -71,6 +73,12 @@ Route::screen('telegram-users', TelegramUser::class)
 // Platform > Admin
 Route::screen('admin-configs', AdminConfigs::class)
     ->name('platform.tg-admin');
+
+Route::screen('admin-booking', BookingScreen::class)
+    ->name('platform.tg-booking');
+
+Route::screen('admin-messages', MessageScreen::class)
+    ->name('platform.tg-messages');
 
 // Platform > System > Roles > Role
 Route::screen('roles/{role}/edit', RoleEditScreen::class)

@@ -47,10 +47,26 @@ class PlatformProvider extends OrchidServiceProvider
                 ->divider(),
 
 
+
+
+            Menu::make('Telegram Configs')
+                ->icon('bs.gear-wide-connected')
+                ->title('Telegram')
+                ->route('platform.tg-admin'),
+
             Menu::make('Telegram Users')
                 ->icon('bs.people')
-                ->title('Navigation')
                 ->route('platform.tg-users'),
+
+
+            Menu::make('Telegram Users Booking')
+                ->icon('bs.book')
+                ->route('platform.tg-booking'),
+
+
+            Menu::make('Telegram Users Messages')
+                ->icon('bs.envelope')
+                ->route('platform.tg-messages'),
 
         ];
     }
