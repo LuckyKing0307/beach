@@ -88,7 +88,7 @@ class CallBackController extends Controller
                     'chat_id' => $request['user_id'],
                     'caption' => 'Photo',
                     'reply_markup' => $reply_markup,
-                    'photo' => $file ? $file : []
+                    'photo' => 'https://beach.learn-solve.com'.$photoLink
                 ];
             }
             if (strlen($config->function)>=5){
