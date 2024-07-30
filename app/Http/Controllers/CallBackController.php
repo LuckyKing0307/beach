@@ -88,8 +88,8 @@ class CallBackController extends Controller
                 try {
                     $this->telegram::sendPhoto($messageData);
                 }catch (\Exception $e){
+                    info(json_encode($messageData));
                     info($e->getMessage());
-                    info($e->getTraceAsString());
                 }
             }
             if (strlen($config->function)>=5){
