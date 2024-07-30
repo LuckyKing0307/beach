@@ -23,6 +23,7 @@ class BotController extends Controller
      */
     public function updates()
     {
+        info('asd');
         try {
             $updates = $this->telegramAPI::commandsHandler(false);
             foreach ($updates as $update) {
