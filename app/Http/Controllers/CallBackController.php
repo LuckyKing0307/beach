@@ -87,7 +87,7 @@ class CallBackController extends Controller
                 try {
                     $file = new InputFile('https://beach.learn-solve.com'.$photoLink);
                 }catch (\Exception $e){
-                    info($e);
+                    info($e->getMessage());
                     info(json_encode($messageData));
                 }
             }
