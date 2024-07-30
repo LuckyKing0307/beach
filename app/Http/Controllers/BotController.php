@@ -26,7 +26,7 @@ class BotController extends Controller
         $itemMenu = [
             'menu' => ['en'=>'Menu','bg'=>'Меню'],
         ];
-        $config = AdminConfigs::find(12);
+        $config = AdminConfigs::find(6);
 
         $reply_markup = Keyboard::make()->inline()
             ->setResizeKeyboard(false)
