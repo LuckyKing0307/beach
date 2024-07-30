@@ -77,22 +77,20 @@ class CallBackController extends Controller
         if ($config->exists()){
             $photoLink = str_replace('//','/',$config->attachment()->first()?->getRelativeUrlAttribute());
             $remoteImage = 'https://beach.learn-solve.com'.$photoLink;
-            $filename = 'my-photo.jpg';
             if (strlen($config->function)<5){
-                try {
-                    $file = new InputFile($remoteImage);
-                    info($file->getFilename().'aaaaaaaaaaaaaaaa');
-                }catch (\Exception $e){
-                    info($e->getMessage());
-                    info($e->getTraceAsString());
-                }
+                $file = new InputFile($remoteImage);
                 $messageData = [
                     'chat_id' => $request['user_id'],
                     'caption' => 'Photo',
                     'reply_markup' => $reply_markup,
-                    'photo' => InputFile::create($remoteImage, $filename)
+                    'photo' => $file
                 ];
-                $this->telegram::sendPhoto($messageData);
+                try {
+                    $this->telegram::sendPhoto($messageData);
+                }catch (\Exception $e){
+                    info($e->getMessage());
+                    info($e->getTraceAsString());
+                }
             }
             if (strlen($config->function)>=5){
                 $messageData = [
