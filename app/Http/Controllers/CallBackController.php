@@ -84,6 +84,7 @@ class CallBackController extends Controller
                     'caption' => 'Photo',
                     'reply_markup' => $reply_markup,
                     'photo' => $file,
+                    'parse_mode' => 'HTML'
                 ];
                 info(json_encode($messageData));
                 $this->telegram::sendPhoto($messageData);
