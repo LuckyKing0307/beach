@@ -26,32 +26,30 @@ class BotController extends Controller
      */
     public function updates(Request $request)
     {
-        info(Update::make($request)->getMessage());
+        $update = Update::make($request);
         try {
-            $updates = $this->telegramAPI::commandsHandler(false);
-            foreach ($updates as $update) {
-                if ($update->isType('callback_query')){
-                    $user = TelegramUser::where(['user_id' => $update->callback_query->message->chat?->id])->get()->first();
-                    if (!$user->block){
-                        $callback = new CallBackController($update->callback_query, $this->telegramAPI);
-                        if ($update->callback_query->data==='menu'){
-                            $menu = new MenuController($update->callback_query->message, $this->telegramAPI);
-                            $menu->isMenuExists($update->callback_query->data);
-                        }else{
-                            $callback->store();
-                        }
-                        $callback->closeCallback();
+            if ($update->isType('callback_query')){
+                $user = TelegramUser::where(['user_id' => $update->callback_query->message->chat?->id])->get()->first();
+                info($user);
+                if (!$user->block){
+                    $callback = new CallBackController($update->callback_query, $this->telegramAPI);
+                    if ($update->callback_query->data==='menu'){
+                        $menu = new MenuController($update->callback_query->message, $this->telegramAPI);
+                        $menu->isMenuExists($update->callback_query->data);
+                    }else{
+                        $callback->store();
                     }
-                }if (!isset($update->entities) and $update->isType('message')){
-                    $user = TelegramUser::where(['user_id' => $update->message->chat?->id])->get()->first();
-                    if (!$user->block){
-                        if ($user->on_chat){
-                            $menu = new MessageController();
-                            $menu->store($update);
-                        }else{
-                            $menu = new MenuController($update->message, $this->telegramAPI);
-                            $menu->isMenuExists($update->message->text);
-                        }
+                    $callback->closeCallback();
+                }
+            }if (!isset($update->entities) and $update->isType('message')){
+                $user = TelegramUser::where(['user_id' => $update->message->chat?->id])->get()->first();
+                if (!$user->block){
+                    if ($user->on_chat){
+                        $menu = new MessageController();
+                        $menu->store($update);
+                    }else{
+                        $menu = new MenuController($update->message, $this->telegramAPI);
+                        $menu->isMenuExists($update->message->text);
                     }
                 }
             }
