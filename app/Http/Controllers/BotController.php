@@ -22,7 +22,7 @@ class BotController extends Controller
     /**
      * Update telegram message.
      */
-    public function updates(Request $request=null)
+    public function updates(Request $request)
     {
         info($request);
         try {

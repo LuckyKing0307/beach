@@ -9,4 +9,3 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::post('/webhook', [BotController::class, 'updates'])->name('bot.post.update');
-Route::get('/webhook', [BotController::class, 'updates'])->name('bot.get.update');
