@@ -76,9 +76,7 @@ class CallBackController extends Controller
                 Keyboard::button(['text' => $itemMenu['menu'][$request['language']], 'callback_data' => 'menu']),
             ]);
         if ($config->exists()){
-            var_dump($request);
             $photoLink = str_replace('//','/',$config->attachment()->first()?->getRelativeUrlAttribute());
-            info('https://beach.learn-solve.com'.$photoLink);
             if (strlen($config->function)<5){
                 $messageData = [
                     'chat_id' => $request['user_id'],
@@ -90,6 +88,7 @@ class CallBackController extends Controller
                     $this->telegram::sendPhoto($messageData);
                 }catch (\Exception $e){
                     info($e->getMessage());
+                    info('https://beach.learn-solve.com'.$photoLink);
                 }
             }
             if (strlen($config->function)>=5){
