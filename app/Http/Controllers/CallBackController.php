@@ -82,10 +82,10 @@ class CallBackController extends Controller
                     'chat_id' => $request['user_id'],
                     'caption' => 'Photo',
                     'reply_markup' => $reply_markup,
-                    'photo' => new InputFile('https://beach.learn-solve.com'.$photoLink)
+                    'photo' => new InputFile($photoLink)
                 ];
                 try {
-                    $this->telegram::sendPhoto($messageData);
+                    $file = new InputFile('https://beach.learn-solve.com'.$photoLink);
                 }catch (\Exception $e){
                     info($e);
                     info(json_encode($messageData));
