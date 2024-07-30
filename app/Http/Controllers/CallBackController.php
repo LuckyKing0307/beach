@@ -86,7 +86,11 @@ class CallBackController extends Controller
                     'reply_markup' => $reply_markup,
                     'photo' => new InputFile('https://beach.learn-solve.com'.$photoLink)
                 ];
-                $this->telegram::sendPhoto($messageData);
+                try {
+                    $this->telegram::sendPhoto($messageData);
+                }catch (\Exception $e){
+                    info($e->getMessage());
+                }
             }
             if (strlen($config->function)>=5){
                 $messageData = [
