@@ -29,5 +29,6 @@ class TestTelegram extends Command
     {
         $resp = new BotController();
         $response = $resp->setWebhook();
+        var_dump($response);
     }
 }

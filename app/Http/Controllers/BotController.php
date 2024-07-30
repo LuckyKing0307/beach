@@ -16,7 +16,7 @@ class BotController extends Controller
         $this->telegramAPI = new Telegram;
     }
     public function setWebhook(){
-        $this->telegramAPI::setWebhook(['url' => 'https://beach.learn-solve.com/webhook']);
+        return $this->telegramAPI::setWebhook(['url' => 'https://beach.learn-solve.com//api/webhook']);
     }
 
     /**

@@ -6,5 +6,4 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/webhook', [BotController::class, 'updates'])->name('bot.get.update');
-Route::post('/webhook', [BotController::class, 'updates'])->name('bot.post.places');
+//Route::get('/webhook', [BotController::class, 'updates'])->name('bot.get.update');
