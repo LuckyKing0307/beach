@@ -25,9 +25,9 @@ class BotController extends Controller
      */
     public function updates(Request $request)
     {
+        info($request);
         try {
             $updates = $this->telegramAPI::commandsHandler(false);
-            info($updates);
             foreach ($updates as $update) {
                 if ($update->isType('callback_query')){
                     $user = TelegramUser::where(['user_id' => $update->callback_query->message->chat?->id])->get()->first();
