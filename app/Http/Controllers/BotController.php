@@ -26,7 +26,7 @@ class BotController extends Controller
      */
     public function updates(Request $request)
     {
-        info(Update::make($request));
+        info(Update::make($request)->getMessage());
         try {
             $updates = $this->telegramAPI::commandsHandler(false);
             foreach ($updates as $update) {
