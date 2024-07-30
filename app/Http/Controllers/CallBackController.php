@@ -79,6 +79,12 @@ class CallBackController extends Controller
             $remoteImage = 'https://beach.learn-solve.com'.$photoLink;
             $filename = 'my-photo.jpg';
             if (strlen($config->function)<5){
+                try {
+                    InputFile::create($remoteImage, $filename);
+                }catch (\Exception $e){
+                    info($e->getMessage());
+                    info($e->getTraceAsString());
+                }
                 $messageData = [
                     'chat_id' => $request['user_id'],
                     'caption' => 'Photo',
