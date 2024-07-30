@@ -82,7 +82,7 @@ class CallBackController extends Controller
                     'chat_id' => $request['user_id'],
                     'caption' => 'Photo',
                     'reply_markup' => $reply_markup,
-                    'photo' => new InputFile('http://127.0.0.1:8000'.$config->attachment()->first()?->getRelativeUrlAttribute())
+                    'photo' => new InputFile('https://beach.learn-solve.com'.$config->attachment()->first()?->getRelativeUrlAttribute())
                 ];
                 $this->telegram::sendPhoto($messageData);
             }
