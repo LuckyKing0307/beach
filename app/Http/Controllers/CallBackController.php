@@ -78,18 +78,18 @@ class CallBackController extends Controller
         if ($config->exists()){
             $photoLink = str_replace('//','/',$config->attachment()->first()?->getRelativeUrlAttribute());
             if (strlen($config->function)<5){
+                try {
+                    $file = new InputFile('https://beach.learn-solve.com'.$photoLink);
+                    info($file);
+                }catch (\Exception $e){
+                    info($e->getMessage());
+                }
                 $messageData = [
                     'chat_id' => $request['user_id'],
                     'caption' => 'Photo',
                     'reply_markup' => $reply_markup,
-                    'photo' => new InputFile($photoLink)
+                    'photo' => $file ? $file : []
                 ];
-                try {
-                    $file = new InputFile('https://beach.learn-solve.com'.$photoLink);
-                }catch (\Exception $e){
-                    info($e->getMessage());
-                    info(json_encode($messageData));
-                }
             }
             if (strlen($config->function)>=5){
                 $messageData = [
