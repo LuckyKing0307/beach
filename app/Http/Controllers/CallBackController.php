@@ -81,7 +81,7 @@ class CallBackController extends Controller
                     'chat_id' => $request['user_id'],
                     'caption' => 'Photo',
                     'reply_markup' => $reply_markup,
-                    'photo' => new InputFile('https://beach.learn-solve.com'.$photoLink)
+                    'photo' => $photoLink
                 ];
                 $this->telegram::sendPhoto($messageData);
             }
