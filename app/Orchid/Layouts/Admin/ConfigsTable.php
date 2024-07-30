@@ -31,7 +31,8 @@ class ConfigsTable extends Table
             TD::make('name', 'ID'),
             TD::make('function', 'Function')->render(function (AdminConfigs $config) {
                 if (strlen($config->function)<5){
-                    return "<img src='{$config->attachment()->first()?->getRelativeUrlAttribute()}' height='50'>";
+                    $photoLink = str_replace('//','/',$config->attachment()->first()?->getRelativeUrlAttribute());
+                    return "<img src='{$photoLink}' height='50'>";
                 }else{
                     return $config->function;
                 }

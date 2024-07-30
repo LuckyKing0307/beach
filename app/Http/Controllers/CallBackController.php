@@ -77,13 +77,14 @@ class CallBackController extends Controller
             ]);
         if ($config->exists()){
             var_dump($request);
-            info('https://beach.learn-solve.com'.$config->attachment()->first()?->getRelativeUrlAttribute());
+            $photoLink = str_replace('//','/',$config->attachment()->first()?->getRelativeUrlAttribute());
+            info('https://beach.learn-solve.com'.$photoLink);
             if (strlen($config->function)<5){
                 $messageData = [
                     'chat_id' => $request['user_id'],
                     'caption' => 'Photo',
                     'reply_markup' => $reply_markup,
-                    'photo' => new InputFile('https://beach.learn-solve.com'.$config->attachment()->first()?->getRelativeUrlAttribute())
+                    'photo' => new InputFile('https://beach.learn-solve.com'.$photoLink)
                 ];
                 $this->telegram::sendPhoto($messageData);
             }
