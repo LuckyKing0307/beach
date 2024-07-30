@@ -36,18 +36,16 @@ class BotController extends Controller
             ]);
 //        $photoLink = str_replace('//','/',$config->attachment()->first()?->getRelativeUrlAttribute());
         $remoteImage = 'https://beach.learn-solve.com//storage//2024//07//30//1f34e34445cbb5a75c441533a7a2f0b7617ecb63.jpg';
-        if (strlen($config->function)<5) {
-            $file = InputFile::create($remoteImage, 'uploaded.jpg');
-            var_dump($file);
-            $messageData = [
-                'chat_id' => 151617513,
-                'caption' => 'Photo',
-                'reply_markup' => $reply_markup,
-                'photo' => $file,
-                'parse_mode' => 'HTML',
-            ];
-            Telegram::sendPhoto($messageData);
-        }
+        $file = InputFile::create($remoteImage, 'uploaded.jpg');
+        var_dump($file);
+        $messageData = [
+            'chat_id' => 151617513,
+            'caption' => 'Photo',
+            'reply_markup' => $reply_markup,
+            'photo' => $file,
+            'parse_mode' => 'HTML',
+        ];
+        Telegram::sendPhoto($messageData);
         return true;
     }
 
