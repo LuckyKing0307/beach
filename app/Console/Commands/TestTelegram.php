@@ -20,16 +20,14 @@ class TestTelegram extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Start test telegram bot';
 
     /**
      * Execute the console command.
      */
     public function handle()
     {
-        //
-        $resp = new BotController(new Api());
-        $response = $resp->updates();
-//        return $response;
+        $resp = new BotController();
+        $response = $resp->setWebhook();
     }
 }
