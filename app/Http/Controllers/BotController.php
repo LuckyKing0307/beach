@@ -26,7 +26,7 @@ class BotController extends Controller
         $itemMenu = [
             'menu' => ['en'=>'Menu','bg'=>'Меню'],
         ];
-        $config = AdminConfigs::find(6);
+        $config = AdminConfigs::find(12);
 
         $reply_markup = Keyboard::make()->inline()
             ->setResizeKeyboard(false)
@@ -35,8 +35,7 @@ class BotController extends Controller
                 Keyboard::button(['text' => $itemMenu['menu']['en'], 'callback_data' => 'menu']),
             ]);
         $photoLink = str_replace('//','/',$config->attachment()->first()?->getRelativeUrlAttribute());
-        $remoteImage = 'https://beach.learn-solve.com'.$photoLink;
-        var_dump($config->attachment()->first()?->getRelativeUrlAttribute());
+        $remoteImage = 'https://beach.learn-solve.com//storage//2024//07//30//1f34e34445cbb5a75c441533a7a2f0b7617ecb63.jpg';
         if (strlen($config->function)<5) {
             $file = InputFile::create($remoteImage, 'uploaded.jpg');
             var_dump($file);
@@ -45,6 +44,7 @@ class BotController extends Controller
                 'caption' => 'Photo',
                 'reply_markup' => $reply_markup,
                 'photo' => $file,
+                'parse_mode' => 'HTML',
             ];
             Telegram::sendPhoto($messageData);
         }
