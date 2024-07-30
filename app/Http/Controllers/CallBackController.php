@@ -76,15 +76,14 @@ class CallBackController extends Controller
             ]);
         if ($config->exists()){
             $photoLink = str_replace('//','/',$config->attachment()->first()?->getRelativeUrlAttribute());
-            $file = file_get_contents('https://beach.learn-solve.com'.$photoLink);
-            info('FILE');
-            info($file);
+            $remoteImage = 'https://beach.learn-solve.com'.$photoLink;
+            $filename = 'my-photo.jpg';
             if (strlen($config->function)<5){
                 $messageData = [
                     'chat_id' => $request['user_id'],
                     'caption' => 'Photo',
                     'reply_markup' => $reply_markup,
-                    'photo' => $photoLink
+                    'photo' => InputFile::create($remoteImage, $filename)
                 ];
                 $this->telegram::sendPhoto($messageData);
             }
