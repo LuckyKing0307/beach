@@ -76,7 +76,8 @@ class CallBackController extends Controller
             ]);
         if ($config->exists()){
             $photoLink = str_replace('//','/',$config->attachment()->first()?->getRelativeUrlAttribute());
-            $file = file_get_contents($photoLink);
+            $file = file_get_contents('https://beach.learn-solve.com'.$photoLink);
+            info('FILE');
             info($file);
             if (strlen($config->function)<5){
                 $messageData = [
