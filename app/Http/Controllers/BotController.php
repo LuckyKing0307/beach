@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AdminConfigs;
 use App\Models\TelegramUser;
 use Illuminate\Http\Request;
 use Telegram\Bot\Api;
+use Telegram\Bot\FileUpload\InputFile;
+use Telegram\Bot\Keyboard\Keyboard;
 use Telegram\Bot\Laravel\Facades\Telegram;
 use Telegram\Bot\Objects\Update;
 
@@ -18,7 +21,34 @@ class BotController extends Controller
     }
     public function setWebhook(){
 //        return $this->telegramAPI::removeWebhook();
-        return $this->telegramAPI::setWebhook(['url' => 'https://beach.learn-solve.com/api/webhook']);
+//        return $this->telegramAPI::setWebhook(['url' => 'https://beach.learn-solve.com/api/webhook']);
+
+        $itemMenu = [
+            'menu' => ['en'=>'Menu','bg'=>'Меню'],
+        ];
+        $config = AdminConfigs::find(12);
+
+        $reply_markup = Keyboard::make()->inline()
+            ->setResizeKeyboard(false)
+            ->setOneTimeKeyboard(true)
+            ->row([
+                Keyboard::button(['text' => $itemMenu['menu']['en'], 'callback_data' => 'menu']),
+            ]);
+        $photoLink = str_replace('//','/',$config->attachment()->first()?->getRelativeUrlAttribute());
+        $remoteImage = 'https://beach.learn-solve.com'.$photoLink;
+        var_dump($config->attachment()->first()?->getRelativeUrlAttribute());
+        if (strlen($config->function)<5) {
+            $file = InputFile::create($remoteImage, 'uploaded.jpg');
+            var_dump($file);
+            $messageData = [
+                'chat_id' => 151617513,
+                'caption' => 'Photo',
+                'reply_markup' => $reply_markup,
+                'photo' => $file,
+            ];
+            Telegram::sendPhoto($messageData);
+        }
+        return true;
     }
 
     /**
