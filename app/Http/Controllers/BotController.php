@@ -32,7 +32,6 @@ class BotController extends Controller
         try {
             if ($update->isType('callback_query')){
                 $user = TelegramUser::where(['user_id' => $update->callback_query->message->chat?->id])->get()->first();
-                info($user);
                 if (!$user->block){
                     $callback = new CallBackController($update->callback_query, $this->telegramAPI);
                     $callback->closeCallback();

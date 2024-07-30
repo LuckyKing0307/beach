@@ -76,6 +76,8 @@ class CallBackController extends Controller
             ]);
         if ($config->exists()){
             $photoLink = str_replace('//','/',$config->attachment()->first()?->getRelativeUrlAttribute());
+            $file = file_get_contents($photoLink);
+            info($file);
             if (strlen($config->function)<5){
                 $messageData = [
                     'chat_id' => $request['user_id'],
