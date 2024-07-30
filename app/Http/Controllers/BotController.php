@@ -6,6 +6,7 @@ use App\Models\TelegramUser;
 use Illuminate\Http\Request;
 use Telegram\Bot\Api;
 use Telegram\Bot\Laravel\Facades\Telegram;
+use Telegram\Bot\Objects\Update;
 
 class BotController extends Controller
 {
@@ -25,7 +26,7 @@ class BotController extends Controller
      */
     public function updates(Request $request)
     {
-        info($request);
+        info(Update::make($request));
         try {
             $updates = $this->telegramAPI::commandsHandler(false);
             foreach ($updates as $update) {
