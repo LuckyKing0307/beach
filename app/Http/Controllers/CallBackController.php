@@ -80,7 +80,7 @@ class CallBackController extends Controller
             $filename = 'my-photo.jpg';
             if (strlen($config->function)<5){
                 try {
-                    $file = InputFile::create($remoteImage, $filename);
+                    $file = new InputFile($remoteImage);
                     info($file->getFilename().'aaaaaaaaaaaaaaaa');
                 }catch (\Exception $e){
                     info($e->getMessage());
