@@ -87,7 +87,7 @@ class CallBackController extends Controller
                 try {
                     $this->telegram::sendPhoto($messageData);
                 }catch (\Exception $e){
-                    info($e->getMessage());
+                    info($e);
                     info('https://beach.learn-solve.com'.$photoLink);
                 }
             }
