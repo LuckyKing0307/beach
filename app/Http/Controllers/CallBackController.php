@@ -85,11 +85,8 @@ class CallBackController extends Controller
                     'reply_markup' => $reply_markup,
                     'photo' => $file,
                 ];
-                try {
-                    $this->telegram::sendPhoto($messageData);
-                }catch (\Exception $e){
-                    info($e);
-                }
+                info(json_encode($messageData));
+                $this->telegram::sendPhoto($messageData);
             }
             if (strlen($config->function)>=5){
                 $messageData = [
