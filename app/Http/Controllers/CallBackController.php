@@ -77,6 +77,7 @@ class CallBackController extends Controller
             ]);
         if ($config->exists()){
             var_dump($request);
+            info('https://beach.learn-solve.com'.$config->attachment()->first()?->getRelativeUrlAttribute());
             if (strlen($config->function)<5){
                 $messageData = [
                     'chat_id' => $request['user_id'],
