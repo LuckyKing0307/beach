@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\TelegramUser;
+use Illuminate\Http\Request;
 use Telegram\Bot\Api;
 use Telegram\Bot\Laravel\Facades\Telegram;
 
@@ -21,9 +22,9 @@ class BotController extends Controller
     /**
      * Update telegram message.
      */
-    public function updates()
+    public function updates(Request $request=null)
     {
-        info('asd');
+        info($request);
         try {
             $updates = $this->telegramAPI::commandsHandler(false);
             foreach ($updates as $update) {
