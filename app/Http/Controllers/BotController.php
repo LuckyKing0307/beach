@@ -2,12 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AdminConfigs;
 use App\Models\TelegramUser;
 use Illuminate\Http\Request;
 use Telegram\Bot\Api;
-use Telegram\Bot\FileUpload\InputFile;
-use Telegram\Bot\Keyboard\Keyboard;
 use Telegram\Bot\Laravel\Facades\Telegram;
 use Telegram\Bot\Objects\Update;
 
@@ -21,32 +18,7 @@ class BotController extends Controller
     }
     public function setWebhook(){
 //        return $this->telegramAPI::removeWebhook();
-//        return $this->telegramAPI::setWebhook(['url' => 'https://beach.learn-solve.com/api/webhook']);
-
-        $itemMenu = [
-            'menu' => ['en'=>'Menu','bg'=>'Меню'],
-        ];
-        $config = AdminConfigs::find(12);
-
-        $reply_markup = Keyboard::make()->inline()
-            ->setResizeKeyboard(false)
-            ->setOneTimeKeyboard(true)
-            ->row([
-                Keyboard::button(['text' => $itemMenu['menu']['en'], 'callback_data' => 'menu']),
-            ]);
-//        $photoLink = str_replace('//','/',$config->attachment()->first()?->getRelativeUrlAttribute());
-        $remoteImage = 'https://beach.learn-solve.com//storage//2024//07//30//1f34e34445cbb5a75c441533a7a2f0b7617ecb63.jpg';
-        $file = InputFile::create($remoteImage, 'uploaded.jpg');
-        var_dump($file);
-        $messageData = [
-            'chat_id' => 151617513,
-            'caption' => 'Photo',
-            'reply_markup' => $reply_markup,
-            'photo' => $file,
-            'parse_mode' => 'HTML',
-        ];
-        Telegram::sendPhoto($messageData);
-        return true;
+        return $this->telegramAPI::setWebhook(['url' => 'https://beach.learn-solve.com/api/webhook']);
     }
 
     /**
@@ -63,7 +35,7 @@ class BotController extends Controller
                 if (!$user->block){
                     $callback = new CallBackController($update->callback_query, $this->telegramAPI);
                     $callback->closeCallback();
-                    if ($update->callback_query->data==='menu'){
+                    if (gettype(json_decode($update->callback_query->data,1))!='array'){
                         $menu = new MenuController($update->callback_query->message, $this->telegramAPI);
                         $menu->isMenuExists($update->callback_query->data);
                     }else{

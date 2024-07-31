@@ -18,10 +18,16 @@ class CallBackController extends Controller
     protected $request;
     protected TelegramBot $telegram;
     protected TelegramUserController $telegramUser;
+
+    public $itemMenu;
     public function __construct($request, TelegramBot $telegram)
     {
         $this->request = $request;
         $this->telegram = $telegram;
+        $this->itemMenu = [
+            'menu' => ['en'=>'Menu','bg'=>'Меню'],
+            'back' => ['en'=>'Back','bg'=>'Меню'],
+        ];
         $this->telegramUser = new TelegramUserController($request->message->chat->id);
     }
 
@@ -63,16 +69,14 @@ class CallBackController extends Controller
 
     protected function photoSend($request)
     {
-        $itemMenu = [
-            'menu' => ['en'=>'Menu','bg'=>'Меню'],
-        ];
         $config = AdminConfigs::find($request['item_id']);
 
         $reply_markup = Keyboard::make()->inline()
             ->setResizeKeyboard(false)
             ->setOneTimeKeyboard(true)
             ->row([
-                Keyboard::button(['text' => $itemMenu['menu'][$request['language']], 'callback_data' => 'menu']),
+                Keyboard::button(['text' => $this->itemMenu['back'][$request['language']], 'callback_data' => $config->trigger_.''.$request['language']]),
+                Keyboard::button(['text' => $this->itemMenu['menu'][$request['language']], 'callback_data' => 'menu']),
             ]);
         if ($config->exists()){
             $photoLink = str_replace('//','/',$config->attachment()->first()?->getRelativeUrlAttribute());
@@ -109,16 +113,14 @@ class CallBackController extends Controller
 
     protected function priceSend($request)
     {
-        $itemMenu = [
-            'menu' => ['en'=>'Menu','bg'=>'Меню'],
-        ];
         $config = AdminConfigs::find($request['item_id']);
 
         $reply_markup = Keyboard::make()->inline()
             ->setResizeKeyboard(false)
             ->setOneTimeKeyboard(true)
             ->row([
-                Keyboard::button(['text' => $itemMenu['menu'][$request['language']], 'callback_data' => 'menu']),
+                Keyboard::button(['text' => $this->itemMenu['back'][$request['language']], 'callback_data' => $config->trigger_.''.$request['language']]),
+                Keyboard::button(['text' => $this->itemMenu['menu'][$request['language']], 'callback_data' => 'menu']),
             ]);
         if ($config->exists()){
             $data = json_decode($config->data,1);
@@ -196,15 +198,11 @@ class CallBackController extends Controller
         $user = TelegramUser::where(['user_id' => $request->message->chat?->id])->get()->first();
         $user->on_chat = 1;
         $user->save();
-
-        $itemMenu = [
-            'menu' => ['en'=>'Menu','bg'=>'Меню'],
-        ];
         $reply_markup = Keyboard::make()->inline()
             ->setResizeKeyboard(false)
             ->setOneTimeKeyboard(true)
             ->row([
-                Keyboard::button(['text' => $itemMenu['menu'][$user->language], 'callback_data' => 'menu']),
+                Keyboard::button(['text' => $this->itemMenu['menu'][$user->language], 'callback_data' => 'menu']),
             ]);
         $messageData = [
             'chat_id' => $request->message->chat?->id,

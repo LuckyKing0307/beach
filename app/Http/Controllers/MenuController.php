@@ -127,7 +127,6 @@ class MenuController extends Controller
             'reply_markup' => $reply_markup,
         ];
         $message = $this->telegram::sendMessage($messageData);
-        var_dump($message->getMessageId());
     }
 
     protected function addRows($rows,$keysBoards)
