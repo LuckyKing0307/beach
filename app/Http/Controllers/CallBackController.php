@@ -70,12 +70,13 @@ class CallBackController extends Controller
     protected function photoSend($request)
     {
         $config = AdminConfigs::find($request['item_id']);
-        info($config->trigger_.''.$request['language']);
+        $trigger = 'trigger_'.$request['language'];
+        info($config->$trigger);
         $reply_markup = Keyboard::make()->inline()
             ->setResizeKeyboard(false)
             ->setOneTimeKeyboard(true)
             ->row([
-                Keyboard::button(['text' => $this->itemMenu['back'][$request['language']], 'callback_data' => $config->trigger_.''.$request['language']]),
+                Keyboard::button(['text' => $this->itemMenu['back'][$request['language']], 'callback_data' => $config->$trigger]),
                 Keyboard::button(['text' => $this->itemMenu['menu'][$request['language']], 'callback_data' => 'menu']),
             ]);
         if ($config->exists()){
@@ -113,13 +114,14 @@ class CallBackController extends Controller
 
     protected function priceSend($request)
     {
+        $trigger = 'trigger_'.$request['language'];
         $config = AdminConfigs::find($request['item_id']);
 
         $reply_markup = Keyboard::make()->inline()
             ->setResizeKeyboard(false)
             ->setOneTimeKeyboard(true)
             ->row([
-                Keyboard::button(['text' => $this->itemMenu['back'][$request['language']], 'callback_data' => $config->trigger_.''.$request['language']]),
+                Keyboard::button(['text' => $this->itemMenu['back'][$request['language']], 'callback_data' => $config->$trigger]),
                 Keyboard::button(['text' => $this->itemMenu['menu'][$request['language']], 'callback_data' => 'menu']),
             ]);
         if ($config->exists()){
