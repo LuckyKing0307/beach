@@ -22,7 +22,6 @@ class MenuController extends Controller
 
     public function isMenuExists($text)
     {
-        var_dump('asdasd');
         $user = TelegramUser::where(['user_id' => $this->request->chat?->id])->first();
         $menuFields = [];
         $config = AdminConfigs::where('trigger_'.$user->language, $text)->first();

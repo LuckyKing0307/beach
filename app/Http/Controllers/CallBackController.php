@@ -26,7 +26,7 @@ class CallBackController extends Controller
         $this->telegram = $telegram;
         $this->itemMenu = [
             'menu' => ['en'=>'Menu','bg'=>'Меню'],
-            'back' => ['en'=>'Back','bg'=>'Меню'],
+            'back' => ['en'=>'Back','bg'=>'Назад'],
         ];
         $this->telegramUser = new TelegramUserController($request->message->chat->id);
     }
@@ -70,7 +70,7 @@ class CallBackController extends Controller
     protected function photoSend($request)
     {
         $config = AdminConfigs::find($request['item_id']);
-
+        info($config->trigger_.''.$request['language']);
         $reply_markup = Keyboard::make()->inline()
             ->setResizeKeyboard(false)
             ->setOneTimeKeyboard(true)
