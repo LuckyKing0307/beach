@@ -71,7 +71,6 @@ class CallBackController extends Controller
     {
         $config = AdminConfigs::find($request['item_id']);
         $trigger = 'trigger_'.$request['language'];
-        info($config->$trigger);
         $reply_markup = Keyboard::make()->inline()
             ->setResizeKeyboard(false)
             ->setOneTimeKeyboard(true)
@@ -178,7 +177,7 @@ class CallBackController extends Controller
             ]);
         }
         $currentDate = Carbon::now();
-        $endOfMonth = $currentDate->copy()->endOfMonth();
+        $endOfMonth = $currentDate->addDays(8);
         $daysLeft = $endOfMonth->diffInDays($currentDate->toDate());
         $remainingDays = [];
         for ($i = 0; $i <= intval($daysLeft)*(-1); $i++) {
