@@ -177,7 +177,11 @@ class CallBackController extends Controller
             ]);
         }
         $currentDate = Carbon::now();
-        $endOfMonth = $currentDate->addDays(8);
+        $endOfMonth = $currentDate->copy()->addDays(8);
+        info('aaaaaaaaaaaaaaa');
+        info($currentDate->copy()->endOfMonth());
+        info($endOfMonth);
+        info('aaaaaaaaaaaaaaa');
         $daysLeft = $endOfMonth->diffInDays($currentDate->toDate());
         $remainingDays = [];
         for ($i = 0; $i <= intval($daysLeft)*(-1); $i++) {
