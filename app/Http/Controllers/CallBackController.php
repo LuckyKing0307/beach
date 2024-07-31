@@ -69,6 +69,7 @@ class CallBackController extends Controller
 
     protected function photoSend($request)
     {
+
         $config = AdminConfigs::find($request['item_id']);
         $trigger = 'trigger_'.$request['language'];
         $reply_markup = Keyboard::make()->inline()
