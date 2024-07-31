@@ -75,6 +75,11 @@ class MenuController extends Controller
     public function sendInlineMenu($menuFields)
     {
         $keysBoards = [];
+
+        $itemMenu = [
+            'menu' => ['en'=>'Menu','bg'=>'Меню'],
+            'back' => ['en'=>'Back','bg'=>'Назад'],
+        ];
         $reply_markup = Keyboard::make()->inline()
             ->setResizeKeyboard(true)
             ->setOneTimeKeyboard(true);
@@ -87,8 +92,13 @@ class MenuController extends Controller
                 $keysBoards[] = Keyboard::button(['text' => $field['day'], 'callback_data' => json_encode($field)]);
             }
         }
+        $backMenu = [];
+
+        $backMenu[] = Keyboard::button(['text' => $itemMenu['back'][$menuFields['language']], 'callback_data' => $menuFields['trigger']]);
+        $backMenu[] = Keyboard::button(['text' => $itemMenu['menu'][$menuFields['language']], 'callback_data' => $menuFields['trigger']]);
 
         $reply_markup = $this->addRows($reply_markup, $keysBoards);
+        $reply_markup = $this->addRows($reply_markup, $backMenu);
 
         $message = $this->telegram::sendMessage([
             'chat_id' => $menuFields['id'],

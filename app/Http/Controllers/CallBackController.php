@@ -168,6 +168,7 @@ class CallBackController extends Controller
             'item_id' => $request['item_id'],
             'day' => null,
         ]);
+        $trigger = 'trigger_'.$request['language'];
         if ($booking->exists()){
             $booking = $booking->get()->first();
         }else{
@@ -176,12 +177,9 @@ class CallBackController extends Controller
                 'item_id' => $request['item_id'],
             ]);
         }
+        $config = AdminConfigs::find($request['item_id']);
         $currentDate = Carbon::now();
-        $endOfMonth = $currentDate->copy()->addDays(8);
-        info('aaaaaaaaaaaaaaa');
-        info($currentDate->copy()->endOfMonth());
-        info($endOfMonth);
-        info('aaaaaaaaaaaaaaa');
+        $endOfMonth = $currentDate->copy()->addDays(7);
         $daysLeft = $endOfMonth->diffInDays($currentDate->toDate());
         $remainingDays = [];
         for ($i = 0; $i <= intval($daysLeft)*(-1); $i++) {
@@ -195,6 +193,8 @@ class CallBackController extends Controller
         }
         $remainingDays['id'] = $this->request->message->chat?->id;
         $remainingDays['text'] = 'Booking';
+        $remainingDays['trigger'] = $config->$trigger;
+        $remainingDays['language'] = $request['language'];
         $menu = new MenuController($this->request->message, $this->telegram);
         $menu->sendInlineMenu($remainingDays);
     }
