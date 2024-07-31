@@ -21,7 +21,7 @@ class BotController extends Controller
 //        return $this->telegramAPI::removeWebhook();
 //        return $this->telegramAPI::setWebhook(['url' => 'https://beach.learn-solve.com/api/webhook']);
 
-        $file = InputFile::create('https://beach.learn-solve.com/storage/2024/07/30/1f34e34445cbb5a75c441533a7a2f0b7617ecb63.jpg','uploaded.jpg');
+        $file = new InputFile('https://beach.learn-solve.com/storage/2024/07/30/1f34e34445cbb5a75c441533a7a2f0b7617ecb63.jpg');
         $messageData = [
             'chat_id' => 151617513,
             'caption' => 'Photo',
