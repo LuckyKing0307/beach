@@ -189,7 +189,7 @@ class CallBackController extends Controller
                 $days = [];
                 $days['id'] = $booking->id;
                 $days['type'] = 'booking_day';
-                $days['day'] = $currentDate->copy()->addDays($i)->toDate()->format('d');
+                $days['day'] = $currentDate->copy()->addDays($i)->toDate()->format('d M');
                 $remainingDays['fields'][] = $days;
             }
         }
