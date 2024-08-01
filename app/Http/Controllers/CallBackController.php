@@ -98,21 +98,18 @@ class CallBackController extends Controller
                 ];
                 $this->telegram::sendMediaGroup($messageData);
 
-                $messageData = [
-                    'chat_id' => $config->user_id,
-                    'reply_markup' => $reply_markup,
-                    'text' => 'photo'
-                ];
-                $this->telegram::sendMessage(($messageData));
+                $text = 'List of photos';
             }
             if (count($attachments) < 2 or gettype($attachments) != 'array') {
-                $messageData = [
-                    'chat_id' => $config->user_id,
-                    'reply_markup' => $reply_markup,
-                    'text' => 'There is no photo'
-                ];
-                $this->telegram::sendMessage(($messageData));
+                $text = 'There is no photo';
             }
+
+            $messageData = [
+                'chat_id' => $config->user_id,
+                'reply_markup' => $reply_markup,
+                'text' => $text
+            ];
+            $this->telegram::sendMessage(($messageData));
         }
     }
 
