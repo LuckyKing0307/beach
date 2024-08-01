@@ -96,9 +96,8 @@ class CallBackController extends Controller
                     'chat_id' => $request['user_id'],
                     'media' => json_encode($medias),
                 ];
-                $this->telegram::sendMediaGroup($messageData);
-
                 $text = 'List of photos';
+                $this->telegram::sendMediaGroup($messageData);
             }
             if (count($attachments) < 2 or gettype($attachments) != 'array') {
                 $text = 'There is no photo';
@@ -109,7 +108,7 @@ class CallBackController extends Controller
                 'reply_markup' => $reply_markup,
                 'text' => $text
             ];
-            $this->telegram::sendMessage(($messageData));
+            $this->telegram::sendMessage($messageData);
         }
     }
 
