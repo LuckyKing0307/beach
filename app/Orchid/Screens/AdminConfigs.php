@@ -161,12 +161,12 @@ class AdminConfigs extends Screen
     }
 
     public function changeSectionItem(Request $request,AdConfigs $config){
-        $photoUrl = '';
+        $photoUrl = [];
         $photoIds = $request->input('trigger.photo', []) ? $request->input('trigger.photo', []) : [];
         foreach ($photoIds as $photoId) {
             $attachment = Attachment::find($photoId);
             if ($attachment) {
-                $photoUrl = $attachment->id;
+                $photoUrl[] = $attachment->id;
             }
         }
 

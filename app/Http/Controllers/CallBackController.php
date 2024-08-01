@@ -8,6 +8,7 @@ use App\Models\TelegramUser;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use mysql_xdevapi\Exception;
+use Orchid\Attachment\Models\Attachment;
 use Telegram\Bot\FileUpload\InputFile;
 use Telegram\Bot\Keyboard\Keyboard;
 use Telegram\Bot\Laravel\Facades\Telegram;
@@ -20,33 +21,35 @@ class CallBackController extends Controller
     protected TelegramUserController $telegramUser;
 
     public $itemMenu;
+
     public function __construct($request, TelegramBot $telegram)
     {
         $this->request = $request;
         $this->telegram = $telegram;
         $this->itemMenu = [
-            'menu' => ['en'=>'Menu','bg'=>'Меню'],
-            'back' => ['en'=>'Back','bg'=>'Назад'],
+            'menu' => ['en' => 'Menu', 'bg' => 'Меню'],
+            'back' => ['en' => 'Back', 'bg' => 'Назад'],
         ];
         $this->telegramUser = new TelegramUserController($request->message->chat->id);
     }
 
-    public function store(){
-            $data = json_decode($this->request->data,1);
+    public function store()
+    {
+        $data = json_decode($this->request->data, 1);
 
-        if (isset($data['function'])){
+        if (isset($data['function'])) {
             $function = $data['function'];
             self::$function($this->request);
             return $function;
         }
-        if (isset($data["item_id"])){
+        if (isset($data["item_id"])) {
             $data['user_id'] = $this->request->message->chat->id;
-            $function = $data['type'].'Send';
+            $function = $data['type'] . 'Send';
 
             self::$function($data);
             return $data;
         }
-        if (isset($data["type"]) and $data["type"]=='booking_day'){
+        if (isset($data["type"]) and $data["type"] == 'booking_day') {
             $data['user_id'] = $this->request->message->chat->id;
             $function = $data['type'];
             self::$function($data);
@@ -60,7 +63,7 @@ class CallBackController extends Controller
      */
     public function language($request)
     {
-        $data = json_decode($request->data,1);
+        $data = json_decode($request->data, 1);
         $this->telegramUser->setLang($data['value']);
         $menu = new MenuController($request->message, $this->telegram);
         $menu->isMenuExists('menu');
@@ -71,7 +74,7 @@ class CallBackController extends Controller
     {
 
         $config = AdminConfigs::find($request['item_id']);
-        $trigger = 'trigger_'.$request['language'];
+        $trigger = 'trigger_' . $request['language'];
         $reply_markup = Keyboard::make()->inline()
             ->setResizeKeyboard(false)
             ->setOneTimeKeyboard(true)
@@ -79,20 +82,24 @@ class CallBackController extends Controller
                 Keyboard::button(['text' => $this->itemMenu['back'][$request['language']], 'callback_data' => $config->$trigger]),
                 Keyboard::button(['text' => $this->itemMenu['menu'][$request['language']], 'callback_data' => 'menu']),
             ]);
-        if ($config->exists()){
-            $photoLink = str_replace('//','/',$config->attachment()->first()?->getRelativeUrlAttribute());
-            $remoteImage = 'https://beach.learn-solve.com'.$photoLink;
-            if (strlen($config->function)<5){
-                $file = InputFile::create($remoteImage,'uploaded.jpg');
+        if ($config->exists()) {
+            $medias = [];
+            $attachments = json_decode($config->function);
+            if (gettype($attachments) == 'array' and count($attachments) > 1) {
+                foreach ($attachments as $attachment) {
+                    $medias[] = [
+                        'type' => 'photo',
+                        'media' => 'https://beach.learn-solve.com'.str_replace('//', '/', Attachment::find($attachment)?->getRelativeUrlAttribute())
+                    ];
+                }
                 $messageData = [
                     'chat_id' => $request['user_id'],
-                    'caption' => 'Photo',
                     'reply_markup' => $reply_markup,
-                    'photo' => $file,
+                    'media' => json_encode($medias),
                 ];
                 $this->telegram::sendPhoto($messageData);
             }
-            if (strlen($config->function)>=5){
+            if (count($attachments) < 2 or gettype($attachments) != 'array') {
                 $messageData = [
                     'chat_id' => $config->user_id,
                     'reply_markup' => $reply_markup,
@@ -105,16 +112,16 @@ class CallBackController extends Controller
 
     public function closeCallback()
     {
-            $params = [
-                'callback_query_id' => $this->request->id,
-                'text' => 'success',
-            ];
-            $this->telegram::answerCallbackQuery($params);
+        $params = [
+            'callback_query_id' => $this->request->id,
+            'text' => 'success',
+        ];
+        $this->telegram::answerCallbackQuery($params);
     }
 
     protected function priceSend($request)
     {
-        $trigger = 'trigger_'.$request['language'];
+        $trigger = 'trigger_' . $request['language'];
         $config = AdminConfigs::find($request['item_id']);
 
         $reply_markup = Keyboard::make()->inline()
@@ -124,10 +131,10 @@ class CallBackController extends Controller
                 Keyboard::button(['text' => $this->itemMenu['back'][$request['language']], 'callback_data' => $config->$trigger]),
                 Keyboard::button(['text' => $this->itemMenu['menu'][$request['language']], 'callback_data' => 'menu']),
             ]);
-        if ($config->exists()){
-            $data = json_decode($config->data,1);
+        if ($config->exists()) {
+            $data = json_decode($config->data, 1);
             $price_text = "Price\n";
-            foreach ($data['price'] as $price){
+            foreach ($data['price'] as $price) {
                 $price_text .= "{$price['time']}h - {$price['price']}\n";
             }
             $messageData = [
@@ -149,7 +156,7 @@ class CallBackController extends Controller
         ];
         $booking = Booking::find($request['id']);
         $user = TelegramUser::where(['user_id' => $booking->user_id])->get()->first();
-        if ($booking->exists()){
+        if ($booking->exists()) {
             $booking->day = $request['day'];
         }
         $booking->save();
@@ -169,10 +176,10 @@ class CallBackController extends Controller
             'item_id' => $request['item_id'],
             'day' => null,
         ]);
-        $trigger = 'trigger_'.$request['language'];
-        if ($booking->exists()){
+        $trigger = 'trigger_' . $request['language'];
+        if ($booking->exists()) {
             $booking = $booking->get()->first();
-        }else{
+        } else {
             $booking = Booking::create([
                 'user_id' => $this->request->message->chat?->id,
                 'item_id' => $request['item_id'],
@@ -183,8 +190,8 @@ class CallBackController extends Controller
         $endOfMonth = $currentDate->copy()->addDays(7);
         $daysLeft = $endOfMonth->diffInDays($currentDate->toDate());
         $remainingDays = [];
-        for ($i = 0; $i <= intval($daysLeft)*(-1); $i++) {
-            if ($i!=0){
+        for ($i = 0; $i <= intval($daysLeft) * (-1); $i++) {
+            if ($i != 0) {
                 $days = [];
                 $days['id'] = $booking->id;
                 $days['type'] = 'booking_day';
@@ -199,6 +206,7 @@ class CallBackController extends Controller
         $menu = new MenuController($this->request->message, $this->telegram);
         $menu->sendInlineMenu($remainingDays);
     }
+
     public function help($request)
     {
         $user = TelegramUser::where(['user_id' => $request->message->chat?->id])->get()->first();

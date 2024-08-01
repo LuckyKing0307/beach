@@ -45,7 +45,7 @@ class EditConfigRows extends Rows
                 Upload::make('trigger.photo')
                     ->title('Upload Photo')
                     ->acceptedFiles('image/*')
-                    ->maxFiles(1),
+                    ->maxFiles(5),
                 Matrix::make('trigger.price')->title('Item Price')
                     ->columns(['time', 'price',]),
             ];

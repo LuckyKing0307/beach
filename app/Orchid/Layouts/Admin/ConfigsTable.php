@@ -30,12 +30,12 @@ class ConfigsTable extends Table
         return [
             TD::make('name', 'ID'),
             TD::make('function', 'Function')->render(function (AdminConfigs $config) {
-                if (strlen($config->function)<5){
-                    $photoLink = str_replace('//','/',$config->attachment()->first()?->getRelativeUrlAttribute());
-                    return "<img src='{$photoLink}' height='50'>";
-                }else{
-                    return $config->function;
-                }
+//                if (!strlen($config->function)<5){
+////                    $photoLink = str_replace('//','/',$config->attachment()->first()?->getRelativeUrlAttribute());
+////                    return "<img src='{$photoLink}' height='50'>";
+//                    return $config->function;
+//                }
+                return $config->function;
             }),
             TD::make('type', 'Type')->render(function ($confid){
                 if ($confid->type == 'menu') {

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AdminConfigs;
 use App\Models\TelegramUser;
 use Illuminate\Http\Request;
+use Orchid\Attachment\Models\Attachment;
 use Telegram\Bot\Api;
 use Telegram\Bot\FileUpload\InputFile;
 use Telegram\Bot\Laravel\Facades\Telegram;
@@ -19,13 +21,7 @@ class BotController extends Controller
     }
     public function setWebhook(){
 //        return $this->telegramAPI::removeWebhook();
-//        return $this->telegramAPI::setWebhook(['url' => 'https://beach.learn-solve.com/api/webhook']);
-
-        $messageData = [
-            'chat_id' => 151617513,
-            'photo' => 'http://beach.learn-solve.com/storage/2024/07/30/1f34e34445cbb5a75c441533a7a2f0b7617ecb63.jpg',
-        ];
-        Telegram::sendPhoto($messageData);
+        return $this->telegramAPI::setWebhook(['url' => 'https://beach.learn-solve.com/api/webhook']);
     }
 
     /**
