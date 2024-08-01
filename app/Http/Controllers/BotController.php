@@ -24,9 +24,25 @@ class BotController extends Controller
         $file = new InputFile('http://beach.learn-solve.com/storage/2024/07/30/1f34e34445cbb5a75c441533a7a2f0b7617ecb63.jpg');
         $messageData = [
             'chat_id' => 151617513,
-            'photo' => $file,
+            'media' =>json_encode( [
+                ['type' => 'photo',
+                    'media' => 'http://beach.learn-solve.com/storage/2024/07/30/1f34e34445cbb5a75c441533a7a2f0b7617ecb63.jpg',
+                ],
+                ['type' => 'photo',
+                    'media' => 'http://beach.learn-solve.com/storage/2024/07/30/1f34e34445cbb5a75c441533a7a2f0b7617ecb63.jpg',
+                ],
+                ['type' => 'photo',
+                    'media' => 'http://beach.learn-solve.com/storage/2024/07/30/1f34e34445cbb5a75c441533a7a2f0b7617ecb63.jpg',
+                ],
+                ['type' => 'photo',
+                    'media' => 'http://beach.learn-solve.com/storage/2024/07/30/1f34e34445cbb5a75c441533a7a2f0b7617ecb63.jpg',
+                ],
+                ['type' => 'photo',
+                    'media' => 'http://beach.learn-solve.com/storage/2024/07/30/1f34e34445cbb5a75c441533a7a2f0b7617ecb63.jpg',
+                ],
+            ]),
         ];
-        Telegram::sendPhoto($messageData);
+        Telegram::sendMediaGroup($messageData);
     }
 
     /**
