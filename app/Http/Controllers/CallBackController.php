@@ -92,12 +92,13 @@ class CallBackController extends Controller
                         'media' => 'https://beach.learn-solve.com'.str_replace('//', '/', Attachment::find($attachment)?->getRelativeUrlAttribute())
                     ];
                 }
+                info($medias);
                 $messageData = [
                     'chat_id' => $request['user_id'],
                     'reply_markup' => $reply_markup,
                     'media' => json_encode($medias),
                 ];
-                $this->telegram::sendPhoto($messageData);
+                $this->telegram::sendMediaGroup($messageData);
             }
             if (count($attachments) < 2 or gettype($attachments) != 'array') {
                 $messageData = [
