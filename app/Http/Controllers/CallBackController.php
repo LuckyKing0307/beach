@@ -103,7 +103,7 @@ class CallBackController extends Controller
                 $text = 'There is no photo';
             }
             $messageData = [
-                'chat_id' => $config->user_id,
+                'chat_id' => $request['user_id'],
                 'reply_markup' => $reply_markup,
                 'text' => $text
             ];
