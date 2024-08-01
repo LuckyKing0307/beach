@@ -102,12 +102,12 @@ class CallBackController extends Controller
             if (count($attachments) < 2 or gettype($attachments) != 'array') {
                 $text = 'There is no photo';
             }
-
             $messageData = [
                 'chat_id' => $config->user_id,
                 'reply_markup' => $reply_markup,
                 'text' => $text
             ];
+            info(json_encode($messageData));
             $this->telegram::sendMessage($messageData);
         }
     }
