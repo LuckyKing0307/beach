@@ -49,6 +49,9 @@ class MenuController extends Controller
 
     public function sendMenu($menuFields)
     {
+        $user = TelegramUser::where(['user_id'=>$menuFields['id']])->get()->first();
+        $user->on_chat = 0;
+        $user->save();
         $keysBoards = [];
         $reply_markup = Keyboard::make()
             ->setResizeKeyboard(false)
