@@ -60,8 +60,8 @@ class BookingScreen extends Screen
     {
 
         $text = [
-            'bg' => 'Ваша заявка принята и подтверждена с вами свяжется наш специалист',
-            'en' => 'We have booked your request our employee will contact you',
+            'bg' => 'Честито! Вашата резервация е подтвърдена! Тук скоро ще се появят параметри на услугата - местоположение и телефон за връзка',
+            'en' => 'Congratulations! Your reservation has been confirmed! Soon here will appear the service parameters - place and contact phone number',
         ];
         $user = TelegramUser::where(['user_id' => $booking->user_id])->get()->first();
 

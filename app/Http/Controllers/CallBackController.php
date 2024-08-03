@@ -29,6 +29,7 @@ class CallBackController extends Controller
         $this->itemMenu = [
             'menu' => ['en' => 'Menu', 'bg' => 'Главно меню'],
             'back' => ['en' => 'Back', 'bg' => '↩️Назад'],
+            'chat' => ['en' => "You've opened a chat with the admin", 'bg' => 'Отворихте чат с администратора'],
         ];
         $this->telegramUser = new TelegramUserController($request->message->chat->id);
     }
@@ -152,10 +153,8 @@ class CallBackController extends Controller
 
     protected function booking_day($request)
     {
-        $text = [
-            'bg' => 'Ваша заявка принята',
-            'en' => 'We have booked your request',
-        ];
+        $text = ['en' => "Thank you! you booking is received. Wait please for confirmation during 4 hours", 'bg' => 'Благодаря! Вашето заявление е прието. Изчакайте потвърждение в рамките на 4 часа'];
+
         $booking = Booking::find($request['id']);
         $user = TelegramUser::where(['user_id' => $booking->user_id])->get()->first();
         if ($booking->exists()) {
@@ -223,7 +222,7 @@ class CallBackController extends Controller
         $messageData = [
             'chat_id' => $request->message->chat?->id,
             'reply_markup' => $reply_markup,
-            'text' => 'Вы открыли чат с администратором'
+            'text' => $this->itemMenu['chat'][$user->language]
         ];
         $this->telegram::sendMessage(($messageData));
     }
