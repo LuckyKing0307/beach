@@ -174,6 +174,7 @@ class AdminConfigs extends Screen
             'text' => ['en' => $request->input('trigger.item_text_en'), 'bg' => $request->input('trigger.item_text_bg')],
             'price' => $request->input('trigger.price'),
         ];
+        $config->name = $request->input('trigger.name');
         $config->data = json_encode($data);
         $config->function = $photoUrl;
         $config->save();
