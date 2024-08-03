@@ -111,9 +111,9 @@ class MenuController extends Controller
         $itemMenu = [
             'photo' => ['en'=>'Photo','bg'=>'Cнимка'],
             'price' => ['en'=>'Price','bg'=>'Цена'],
-            'booking' => ['en'=>'Booking','bg'=>'Резервация'],
-            'menu' => ['en'=>'Menu','bg'=>'Меню'],
-            'help' => ['en'=>'Help','bg'=>'Помогне'],
+            'booking' => ['en'=>'Booking','bg'=>'Резерв'],
+            'menu' => ['en'=>'Menu','bg'=>'Главно меню'],
+            'help' => ['en'=>'Help','bg'=>'Задай въпрос'],
         ];
         $menuItemFields = [
             'item_id' => $menuFields['item_id'],

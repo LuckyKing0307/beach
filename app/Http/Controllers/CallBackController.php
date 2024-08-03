@@ -27,8 +27,8 @@ class CallBackController extends Controller
         $this->request = $request;
         $this->telegram = $telegram;
         $this->itemMenu = [
-            'menu' => ['en' => 'Menu', 'bg' => 'Меню'],
-            'back' => ['en' => 'Back', 'bg' => 'Назад'],
+            'menu' => ['en' => 'Menu', 'bg' => 'Главно меню'],
+            'back' => ['en' => 'Back', 'bg' => '↩️Назад'],
         ];
         $this->telegramUser = new TelegramUserController($request->message->chat->id);
     }
