@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Orchid\Screen\AsSource;
 
 class Message extends Model
@@ -20,4 +21,10 @@ class Message extends Model
     protected $casts = [
         'data' => 'array',
     ];
+
+    public function user(): hasMany
+    {
+        $user =  $this->hasMany(TelegramUser::class, 'user_id', 'user_id');
+        return $user;
+    }
 }

@@ -13,6 +13,7 @@ use App\Orchid\Screens\Examples\ExampleGridScreen;
 use App\Orchid\Screens\Examples\ExampleLayoutsScreen;
 use App\Orchid\Screens\Examples\ExampleScreen;
 use App\Orchid\Screens\Examples\ExampleTextEditorsScreen;
+use App\Orchid\Screens\MessageListScreen;
 use App\Orchid\Screens\MessageScreen;
 use App\Orchid\Screens\PlatformScreen;
 use App\Orchid\Screens\Role\RoleEditScreen;
@@ -76,6 +77,10 @@ Route::screen('admin-configs', AdminConfigs::class)
 
 Route::screen('admin-booking', BookingScreen::class)
     ->name('platform.tg-booking');
+
+Route::screen('messages/{message?}', MessageListScreen::class)
+    ->name('platform.message.list');
+
 
 Route::screen('admin-messages', MessageScreen::class)
     ->name('platform.tg-messages');

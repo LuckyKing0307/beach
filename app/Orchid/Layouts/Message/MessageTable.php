@@ -42,6 +42,11 @@ class MessageTable extends Table
                 $text = $message->data['text'];
                 return $text;
             }),
+
+            TD::make('message', 'MESSAGES TREE')->render(function (Message $message){
+                $link = route('platform.message.list', ['message'=>$message->id]);
+                return "<a href='{$link}' target='_blank'>Open Messages List</a>";
+            }),
             TD::make('day', 'Time')->render(function (Message $booking) {
                 $day = Carbon::parse($booking->created_at)->format('d M H:i:s');
                 return $day;

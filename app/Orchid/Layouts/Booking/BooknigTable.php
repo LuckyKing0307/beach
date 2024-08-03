@@ -42,8 +42,7 @@ class BooknigTable extends Table
                 return $item->name;
             }),
             TD::make('day', 'DAY')->render(function (Booking $booking) {
-                $day = Carbon::parse($booking->created_at)->getTranslatedMonthName();
-                return $day.' '.$booking->day;
+                return $booking->day;
             }),
             TD::make('username', 'USERNAME')->render(function (Booking $booking) {
                 $user = TelegramUser::where(['user_id' => $booking->user_id])->get()->first();
