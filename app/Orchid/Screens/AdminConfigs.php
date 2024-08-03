@@ -190,7 +190,7 @@ class AdminConfigs extends Screen
             if (!$configGet->exists()) {
                 $data = [];
                 $sections = AdConfigs::create([
-                    'name' => $trigger['en'],
+                    'name' => $trigger['name'],
                     'function' => '',
                     'trigger_en' => $trigger['en'],
                     'trigger_bg' => $trigger['bg'],
