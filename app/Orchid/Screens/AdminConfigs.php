@@ -214,6 +214,8 @@ class AdminConfigs extends Screen
         ];
         $config->data = json_encode($data);
         $config->name = $request->input('trigger.name');
+        $config->trigger_en = $request->input('trigger.trigger_en');
+        $config->trigger_bg = $request->input('trigger.trigger_bg');
         $config->save();
     }
 
