@@ -29,7 +29,7 @@ class EditConfigRows extends Rows
             return [
                 Input::make('trigger.id')->hidden(1),
                 Input::make('trigger.name')
-                    ->title('Trigger Name'),
+                    ->title('Trigger Name')->disabled(1),
                 Input::make('trigger.text_en')->title('Text En'),
                 Input::make('trigger.text_bg')->title('Text Bg'),
                 Matrix::make('trigger.fields')->title('Return Fields')
@@ -39,7 +39,7 @@ class EditConfigRows extends Rows
             return [
                 Input::make('trigger.id')->hidden(1),
                 Input::make('trigger.name')
-                    ->title('Trigger Name'),
+                    ->title('Trigger Name')->disabled(1),
                 Input::make('trigger.item_text_en')->title('Text En'),
                 Input::make('trigger.item_text_bg')->title('Text Bg'),
                 Upload::make('trigger.photo')

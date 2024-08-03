@@ -27,11 +27,7 @@ class EditItemConfigRows extends Rows
         return [
             Input::make('trigger.id')->hidden(1),
             Input::make('trigger.name')
-                ->title('Trigger Name'),
-            Input::make('trigger.trigger_en')
-                ->title('Trigger En Name'),
-            Input::make('trigger.trigger_bg')
-                ->title('Trigger Bg Name'),
+                ->title('Trigger Name')->disabled(),
             Input::make('trigger.text_en')->title('Text En'),
             Input::make('trigger.text_bg')->title('Text Bg'),
             Matrix::make('trigger.fields')->title('Return Fields')
