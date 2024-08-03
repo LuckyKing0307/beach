@@ -190,7 +190,7 @@ class AdminConfigs extends Screen
             if (!$configGet->exists()) {
                 $data = [];
                 $sections = AdConfigs::create([
-                    'name' => $trigger['name'],
+                    'name' => $trigger['en'],
                     'function' => '',
                     'trigger_en' => $trigger['en'],
                     'trigger_bg' => $trigger['bg'],
@@ -213,6 +213,7 @@ class AdminConfigs extends Screen
             'fields' => $fields,
         ];
         $config->data = json_encode($data);
+        $config->name = $request->input('trigger.name');
         $config->save();
     }
 
