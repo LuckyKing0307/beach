@@ -74,7 +74,6 @@ class AdminConfigs extends Screen
 
     public function asyncGetConfig(AdConfigs $config): array
     {
-        var_dump($config->data);
         $data = json_decode($config->data, 1);
         if ($config->type==='section_item'){
             $configDb = [
