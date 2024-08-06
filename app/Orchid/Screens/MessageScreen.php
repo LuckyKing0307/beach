@@ -25,7 +25,7 @@ class MessageScreen extends Screen
         return [
             'messages' => Message::where([
                 ['type','!=','admin']
-            ])->paginate(10),
+            ])->orderBy('created_at', 'desc')->paginate(10),
             'message' => Message::firstOrFail(),
         ];
     }
