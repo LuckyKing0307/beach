@@ -14,10 +14,16 @@ class MenuController extends Controller
 {
     protected $request;
     protected TelegramBot $telegram;
+    public $itemMenu;
     public function __construct($request, TelegramBot $telegram)
     {
         $this->request = $request;
         $this->telegram = $telegram;
+        $this->itemMenu = [
+            'menu' => ['en' => 'Menu', 'bg' => 'Главно меню'],
+            'back' => ['en' => 'Back', 'bg' => '↩️Назад'],
+            'chat' => ['en' => "You've opened a chat with the admin", 'bg' => 'Отворихте чат с администратора'],
+        ];
     }
 
     public function isMenuExists($text)
@@ -45,6 +51,12 @@ class MenuController extends Controller
             $menuFields['language'] = $user->language;
             $this->sendItemDetails($menuFields, $config);
         }
+        if ($text=='Help' || $text=='Задай въпрос'){
+            $menuFields['id'] = $user->user_id;
+            $menuFields['item_id'] = $config->id;
+            $menuFields['language'] = $user->language;
+            $this->help($menuFields);
+        }
     }
 
     public function sendMenu($menuFields)
@@ -53,6 +65,7 @@ class MenuController extends Controller
         $user->on_chat = 0;
         $user->save();
         $keysBoards = [];
+        $help = ['en'=>'Help','bg'=>'Задай въпрос'];
         $reply_markup = Keyboard::make()
             ->setResizeKeyboard(false)
             ->setOneTimeKeyboard(true);
@@ -67,8 +80,9 @@ class MenuController extends Controller
         }
 
         $reply_markup = $this->addRows($reply_markup, $keysBoards);
+        $reply_markup = $this->addRows($reply_markup, $help[$user->language]);
 
-        $message = $this->telegram::sendMessage([
+        $this->telegram::sendMessage([
             'chat_id' => $menuFields['id'],
             'text' => $menuFields['text'],
             'reply_markup' => $reply_markup
@@ -103,11 +117,30 @@ class MenuController extends Controller
         $reply_markup = $this->addRows($reply_markup, $keysBoards);
         $reply_markup = $this->addRows($reply_markup, $backMenu);
 
-        $message = $this->telegram::sendMessage([
+        $this->telegram::sendMessage([
             'chat_id' => $menuFields['id'],
             'text' => $menuFields['text'],
             'reply_markup' => $reply_markup
         ]);
+    }
+
+    public function help($menuFields)
+    {
+        $user = TelegramUser::where(['user_id' => $menuFields['id']])->get()->first();
+        $user->on_chat = 1;
+        $user->save();
+        $reply_markup = Keyboard::make()->inline()
+            ->setResizeKeyboard(false)
+            ->setOneTimeKeyboard(true)
+            ->row([
+                Keyboard::button(['text' => $this->itemMenu['menu'][$user->language], 'callback_data' => 'menu']),
+            ]);
+        $messageData = [
+            'chat_id' => $menuFields['id'],
+            'reply_markup' => $reply_markup,
+            'text' => $this->itemMenu['chat'][$user->language]
+        ];
+        $this->telegram::sendMessage(($messageData));
     }
 
     public function sendItemDetails($menuFields, $config){
