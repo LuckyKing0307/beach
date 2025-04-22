@@ -35,7 +35,7 @@ class MenuController extends Controller
             $menuFields['id'] = $user->user_id;
             $menuFields['item_id'] = $config->id;
             $menuFields['language'] = $user->language;
-            $this->help($menuFields);
+            $this->helpMenu($menuFields);
         }
         if ($user and $config->type!='section_item'){
             $menuData = json_decode($config->data);
@@ -124,7 +124,7 @@ class MenuController extends Controller
         ]);
     }
 
-    public function help($menuFields): void
+    public function helpMenu($menuFields)
     {
         info('aaaaaaaaaaaaaa12');
         $user = TelegramUser::where(['user_id' => $menuFields['id']])->get()->first();
