@@ -31,8 +31,6 @@ class MenuController extends Controller
         $user = TelegramUser::where(['user_id' => $this->request->chat?->id])->first();
         $menuFields = [];
         $config = AdminConfigs::where('trigger_'.$user->language, $text)->first();
-        info('aaaaaaaaaaaaaaaaaaaa');
-        info($text);
         if ($text=='Help' || $text=='Задай въпрос'){
             $menuFields['id'] = $user->user_id;
             $menuFields['item_id'] = $config->id;
@@ -131,7 +129,7 @@ class MenuController extends Controller
         $user = TelegramUser::where(['user_id' => $menuFields['id']])->get()->first();
         $user->on_chat = 1;
         $user->save();
-        info();
+        info($user);
         $reply_markup = Keyboard::make()->inline()
             ->setResizeKeyboard(false)
             ->setOneTimeKeyboard(true)
