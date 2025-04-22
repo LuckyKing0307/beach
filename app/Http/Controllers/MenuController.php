@@ -124,12 +124,14 @@ class MenuController extends Controller
         ]);
     }
 
-    public function help($menuFields)
+    public function help($menuFields): void
     {
+        info('aaaaaaaaaaaaaa12');
         $user = TelegramUser::where(['user_id' => $menuFields['id']])->get()->first();
         $user->on_chat = 1;
         $user->save();
-        info($user);
+        info($menuFields['id']);
+        info('aaaaaaaaaaaaaa');
         $reply_markup = Keyboard::make()->inline()
             ->setResizeKeyboard(false)
             ->setOneTimeKeyboard(true)
