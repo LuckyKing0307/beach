@@ -34,7 +34,6 @@ class MenuController extends Controller
         info('aaaaaaaaaaaaaaaaaaaa');
         info($text);
         if ($text=='Help' || $text=='Задай въпрос'){
-            info('aaaaaaaaaaaaaaaaaaaa');
             $menuFields['id'] = $user->user_id;
             $menuFields['item_id'] = $config->id;
             $menuFields['language'] = $user->language;
@@ -132,6 +131,7 @@ class MenuController extends Controller
         $user = TelegramUser::where(['user_id' => $menuFields['id']])->get()->first();
         $user->on_chat = 1;
         $user->save();
+        info();
         $reply_markup = Keyboard::make()->inline()
             ->setResizeKeyboard(false)
             ->setOneTimeKeyboard(true)
@@ -144,6 +144,7 @@ class MenuController extends Controller
             'reply_markup' => $reply_markup,
             'text' => $chat[$user->language]
         ];
+        info($messageData);
         $this->telegram::sendMessage($messageData);
     }
 
