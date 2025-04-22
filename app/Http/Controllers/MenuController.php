@@ -137,12 +137,13 @@ class MenuController extends Controller
             ->row([
                 Keyboard::button(['text' => $this->itemMenu['menu'][$user->language], 'callback_data' => 'menu']),
             ]);
+        $chat = ['en' => "You've opened a chat with the admin", 'bg' => 'Отворихте чат с администратора'];
         $messageData = [
             'chat_id' => $menuFields['id'],
             'reply_markup' => $reply_markup,
-            'text' => $this->itemMenu['chat'][$user->language]
+            'text' => $chat[$user->language]
         ];
-        $this->telegram::sendMessage(($messageData));
+        $this->telegram::sendMessage($messageData);
     }
 
     public function sendItemDetails($menuFields, $config){
