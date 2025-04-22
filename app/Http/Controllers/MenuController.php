@@ -80,7 +80,7 @@ class MenuController extends Controller
         }
 
         $reply_markup = $this->addRows($reply_markup, $keysBoards);
-        $reply_markup = $this->addRows($reply_markup, $help[$user->language]);
+        $reply_markup = $this->addRows($reply_markup, [$help[$user->language]]);
 
         $this->telegram::sendMessage([
             'chat_id' => $menuFields['id'],
