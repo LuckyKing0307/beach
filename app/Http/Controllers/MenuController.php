@@ -34,6 +34,7 @@ class MenuController extends Controller
         info('aaaaaaaaaaaaaaaaaaaa');
         info($text);
         if ($text=='Help' || $text=='Задай въпрос'){
+            info('aaaaaaaaaaaaaaaaaaaa');
             $menuFields['id'] = $user->user_id;
             $menuFields['item_id'] = $config->id;
             $menuFields['language'] = $user->language;
