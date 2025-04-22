@@ -30,13 +30,12 @@ class MenuController extends Controller
     {
         $user = TelegramUser::where(['user_id' => $this->request->chat?->id])->first();
         $menuFields = [];
-        $config = AdminConfigs::where('trigger_'.$user->language, $text)->first();
         if ($text=='Help' || $text=='Задай въпрос'){
             $menuFields['id'] = $user->user_id;
-            $menuFields['item_id'] = $config->id;
             $menuFields['language'] = $user->language;
             $this->helpMenu($menuFields);
         }
+        $config = AdminConfigs::where('trigger_'.$user->language, $text)->first();
         if ($user and $config->type!='section_item'){
             $menuData = json_decode($config->data);
             $menuFields['id'] = $user->user_id;
