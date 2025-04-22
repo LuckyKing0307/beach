@@ -51,6 +51,8 @@ class MenuController extends Controller
             $menuFields['language'] = $user->language;
             $this->sendItemDetails($menuFields, $config);
         }
+        info('aaaaaaaaaaaaaaaaa');
+        info($text);
         if ($text=='Help' || $text=='Задай въпрос'){
             $menuFields['id'] = $user->user_id;
             $menuFields['item_id'] = $config->id;
