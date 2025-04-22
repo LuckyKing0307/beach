@@ -144,7 +144,6 @@ class MenuController extends Controller
             'reply_markup' => $reply_markup,
             'text' => $chat[$user->language]
         ];
-        info($messageData);
         $this->telegram::sendMessage($messageData);
     }
 
