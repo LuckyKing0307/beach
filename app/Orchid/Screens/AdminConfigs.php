@@ -237,6 +237,7 @@ class AdminConfigs extends Screen
                         'name' => $t['en'],
                         'trigger_en' => $t['en'],
                         'trigger_bg' => $t['bg'],
+                        'function' => 'sectionData',
                     ]);
                 } else {
                     $section = AdConfigs::create([
