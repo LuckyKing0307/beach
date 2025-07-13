@@ -25,7 +25,7 @@ class EditConfigRows extends Rows
      */
     protected function fields(): iterable
     {
-        if ($this->query->get('trigger.text_en')){
+        if ($this->query->get('trigger.section') != 'section'){
             return [
                 Input::make('trigger.id')->hidden(1),
                 Input::make('trigger.name')

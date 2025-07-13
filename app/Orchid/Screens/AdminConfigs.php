@@ -78,6 +78,7 @@ class AdminConfigs extends Screen
         if ($config->type === 'section_item') {
             $configDb = [
                 'id' => $config->id,
+                'type' => $config->type,
                 'name' => $config->name,
                 'item_text_en' => isset($data['text']) ? $data['text']['en'] : '',
                 'item_text_bg' => isset($data['text']) ? $data['text']['bg'] : '',
@@ -86,6 +87,7 @@ class AdminConfigs extends Screen
         } else {
             $configDb = [
                 'id' => $config->id,
+                'type' => $config->type,
                 'name' => $config->name,
                 'text_en' => isset($data['text']) ? $data['text']['en'] : '',
                 'text_bg' => isset($data['text']) ? $data['text']['bg'] : '',
