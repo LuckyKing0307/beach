@@ -201,7 +201,7 @@ class AdminConfigs extends Screen
                     'function' => '',
                     'trigger_en' => $trigger['en'],
                     'trigger_bg' => $trigger['bg'],
-                    'type' => 'section',
+                    'type' => 'section_item',
                     'fields' => '[]',
                     'data' => json_encode($data),
                 ]);
