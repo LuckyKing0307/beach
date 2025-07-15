@@ -39,7 +39,7 @@ class BooknigTable extends Table
                 }),
             TD::make('item', 'ORDER')->render(function (Booking $booking){
                 $item = AdminConfigs::find($booking->item_id);
-                return $item->name;
+                return $item?->name;
             }),
             TD::make('day', 'DAY')->render(function (Booking $booking) {
                 return $booking->day;

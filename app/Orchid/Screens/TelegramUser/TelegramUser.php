@@ -77,7 +77,7 @@ class TelegramUser extends Screen
                         foreach ($bookings as $booking){
                             $day = Carbon::parse($booking['created_at'])->getTranslatedMonthName();
                             $item = AdminConfigs::find($booking['item_id']);
-                            $text .= "<p>{$booking['id']} - $item->name - $day $booking->day</p>";
+                            $text .= "<p>{$booking['id']} - $item?->name - $day $booking->day</p>";
                         }
                         return $text;
                     }),
