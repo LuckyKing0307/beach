@@ -181,7 +181,9 @@ class AdminConfigs extends Screen
             'price' => $request->input('trigger.price'),
         ];
         $config->data = json_encode($data);
-        $config->function = $photoUrl;
+        if(count($photoUrl)>0){
+            $config->function =  $photoUrl;
+        }
         $config->save();
 
     }
