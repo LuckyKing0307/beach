@@ -7,6 +7,7 @@ use App\Models\Booking;
 use App\Models\Message;
 use App\Models\TelegramUser;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Actions\ModalToggle;
 use Orchid\Screen\Layouts\Table;
@@ -39,7 +40,7 @@ class MessageTable extends Table
                     return $active->username;
                 }),
             TD::make('message', 'MESSAGE')->render(function (Message $message){
-                $text = $message->data['text'];
+                $text = Str::limit($message->data['text'], 30, '...');
                 return $text;
             }),
 
