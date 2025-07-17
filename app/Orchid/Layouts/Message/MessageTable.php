@@ -43,7 +43,7 @@ class MessageTable extends Table
                 return $text;
             }),
 
-            TD::make('message', 'MESSAGES TREE')->render(function (Message $message){
+            TD::make('message_tree', 'MESSAGES TREE')->render(function (Message $message){
                 $link = route('platform.message.list', ['message'=>$message->id]);
                 return "<a href='{$link}' target='_blank'>Open Messages List</a>";
             }),
