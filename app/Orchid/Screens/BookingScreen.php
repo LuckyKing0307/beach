@@ -18,7 +18,7 @@ class BookingScreen extends Screen
     public function query(): iterable
     {
         return [
-            'bookings' => Booking::orderBy('created_at')->paginate(10),
+            'bookings' => Booking::whereNotNull('day')->orderBy('created_at','desc')->paginate(10),
             'booking' => Booking::firstOrFail(),
         ];
     }
