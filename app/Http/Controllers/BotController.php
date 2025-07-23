@@ -36,26 +36,7 @@ class BotController extends Controller
             if ($update->isType('callback_query')){
                 $user = TelegramUser::where(['user_id' => $update->callback_query->message->chat?->id])->get()->first();
                 if (!$user->block){
-                    if (isset($update->message->contact)) {
-                        $contact = $update->message->contact;
 
-                        $phoneNumber = $contact['phone_number'];
-                        $userId = $contact['user_id'] ?? $update->message->from?->id;
-
-                        // Обновим запись в БД
-                        if ($user) {
-                            $user->phone = $phoneNumber;
-                            $user->save();
-                        }
-
-                        // Отправим подтверждение
-                        $this->telegramAPI->sendMessage([
-                            'chat_id' => $update->message->chat->id,
-                            'text' => "✅ Благодарим! Ваш номер телефона сохранён: $phoneNumber"
-                        ]);
-
-                        return;
-                    }
                     $callback = new CallBackController($update->callback_query, $this->telegramAPI);
                     $callback->closeCallback();
                     if (gettype(json_decode($update->callback_query->data,1))!='array'){
@@ -68,6 +49,21 @@ class BotController extends Controller
             }if (!isset($update->entities) and $update->isType('message')){
                 $user = TelegramUser::where(['user_id' => $update->message->chat?->id])->get()->first();
                 if (!$user->block){
+                    if (isset($update->message->contact)) {
+                        $contact = $update->message->contact;
+                        $phoneNumber = $contact['phone_number'];
+                        if ($user) {
+                            $user->phone = $phoneNumber;
+                            $user->save();
+                        }
+
+                        $this->telegramAPI->sendMessage([
+                            'chat_id' => $update->message->chat->id,
+                            'text' => "✅ Благодарим! Ваш номер телефона сохранён: $phoneNumber"
+                        ]);
+
+                        return;
+                    }
                     if ($user->on_chat){
                         $menu = new MessageController();
                         $menu->store($update);
