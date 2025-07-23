@@ -37,7 +37,5 @@ class MessageController extends Controller
             'data' => ['text' => $data['text']],
         ];
         Message::create($data);
-//        $user->on_chat = 0;
-//        $user->save();
     }
 }

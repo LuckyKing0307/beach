@@ -77,14 +77,6 @@ class MessageScreen extends Screen
 
         $data = [
             'user_id' => $message->user_id,
-            'message_id' => $message->id,
-            'type' => 'admin',
-            'data' => ['text' => $request->input('text')],
-        ];
-        Message::create($data);
-
-        $data = [
-            'user_id' => $message->user_id,
             'text' => $request->input('text')
         ];
         $messanger = new MessageController();
