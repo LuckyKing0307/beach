@@ -49,6 +49,7 @@ class BotController extends Controller
             }if (!isset($update->entities) and $update->isType('message')){
                 $user = TelegramUser::where(['user_id' => $update->message->chat?->id])->get()->first();
                 if (!$user->block){
+                    info($update->message);
                     if (isset($update->message->contact)) {
                         $contact = $update->message->contact;
                         $phoneNumber = $contact['phone_number'];
