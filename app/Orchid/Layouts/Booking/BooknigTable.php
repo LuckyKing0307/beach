@@ -46,7 +46,7 @@ class BooknigTable extends Table
             }),
             TD::make('username', 'USERNAME')->render(function (Booking $booking) {
                 $user = TelegramUser::where(['user_id' => $booking->user_id])->get()->first();
-                return $user->username;
+                return '<a href="https://t.me/' . ltrim($user->username, '@') . '" target="_blank">@' . $user->username . '</a>';
             }),
             TD::make('phone', 'PHONE')->render(function (Booking $booking) {
                 $user = TelegramUser::where(['user_id' => $booking->user_id])->get()->first();
