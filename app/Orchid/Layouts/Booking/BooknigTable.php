@@ -48,6 +48,10 @@ class BooknigTable extends Table
                 $user = TelegramUser::where(['user_id' => $booking->user_id])->get()->first();
                 return $user->username;
             }),
+            TD::make('phone', 'PHONE')->render(function (Booking $booking) {
+                $user = TelegramUser::where(['user_id' => $booking->user_id])->get()->first();
+                return $user->phone;
+            }),
             TD::make('confirmation','CONFIRMATION')
                 ->alignCenter()
                 ->render(function (Booking $booking) {
