@@ -72,12 +72,15 @@ Please send your phone number using the button below.',
 
         $booking->active = 1;
         $booking->save();
-        $keyboard = Keyboard::make()->inline()
-        ->setResizeKeyboard(false)
-        ->setOneTimeKeyboard(true)
-        ->row([
-            Keyboard::button(['text' => $text['tel-'.$user->language],'request_contact' => true]),
-        ]);
+        $keyboard = Keyboard::make()
+            ->setResizeKeyboard(true)
+            ->setOneTimeKeyboard(true)
+            ->row([
+                Keyboard::button([
+                    'text' => $text['tel-'.$user->language],
+                    'request_contact' => true
+                ])
+            ]);
         $data = [
             'user_id' => $booking->user_id,
             'text' => $text[$user->language],
