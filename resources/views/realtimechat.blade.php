@@ -12,9 +12,20 @@
                         <div class="">{{$message->user()->get()->first()->username}}</div>
                     <div style="background: #32a89d; padding: 10px 20px; margin-bottom: 10px;">
             @endif
-                        {{$message->data['text']}}
+
+                        @if($message->type=='callback')
+                            Нажал на {{$message->data['text']}}
+                        @elseif($message->type=='admin')
+                            {{$message->data['text']}}
+                        @else
+                            {{$message->data['text']}}
+                        @endif
                     </div>
-                    <div class="">{{$message->created_at}}</div>
+                        @if($message->type=='admin')
+                            <div class="">{{$message->created_at}}</div>
+                        @else
+                            <div class="">{{$message->created_at}}</div>
+                        @endif
             </div>
         </div>
 @endforeach
