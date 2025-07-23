@@ -56,10 +56,10 @@ class BotController extends Controller
                             $user->phone = $phoneNumber;
                             $user->save();
                         }
-
-                        $this->telegramAPI->sendMessage([
-                            'chat_id' => $update->message->chat->id,
-                            'text' => "✅ Благодарим! Ваш номер телефона сохранён: $phoneNumber"
+                        $text = ['en' => 'Thank you! Your phone number has been saved', 'bg' => 'Благодарим! Вашият телефонен номер беше запазен'];
+                        $this->telegramAPI::sendMessage([
+                            'chat_id' => $update->message->chat?->id,
+                            'text' => "✅ ".$text[$user->language].": $phoneNumber"
                         ]);
 
                         return;
