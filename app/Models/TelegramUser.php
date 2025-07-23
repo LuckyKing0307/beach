@@ -18,7 +18,8 @@ class TelegramUser extends Model
         'language',
         'active',
         'block',
-        'on_chat'
+        'on_chat',
+        'phone'
     ];
 
 }
