@@ -48,6 +48,7 @@ class BotController extends Controller
                 }
             }if (!isset($update->entities) and $update->isType('message')){
                 $user = TelegramUser::where(['user_id' => $update->message->chat?->id])->get()->first();
+                $menu = new MenuController($update->message, $this->telegramAPI);
                 if (!$user->block){
                     if (isset($update->message->contact)) {
                         $contact = $update->message->contact;
@@ -62,13 +63,13 @@ class BotController extends Controller
                             'text' => "✅ ".$text[$user->language].": $phoneNumber"
                         ]);
 
+                        $menu->isMenuExists('menu');
                         return;
                     }
                     if ($user->on_chat){
                         $menu = new MessageController();
                         $menu->store($update);
                     }else{
-                        $menu = new MenuController($update->message, $this->telegramAPI);
                         $menu->isMenuExists($update->message->text);
                     }
                 }
