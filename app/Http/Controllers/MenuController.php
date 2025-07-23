@@ -66,7 +66,7 @@ class MenuController extends Controller
         $keysBoards = [];
         $help = ['en'=>'Help','bg'=>'Задай въпрос'];
         $reply_markup = Keyboard::make()
-            ->setResizeKeyboard(false)
+            ->setResizeKeyboard(true)
             ->setOneTimeKeyboard(true);
         foreach ($menuFields['fields'] as $field){
             if (count($keysBoards)==3){
@@ -132,7 +132,7 @@ class MenuController extends Controller
         info($menuFields['id']);
         info('aaaaaaaaaaaaaa');
         $reply_markup = Keyboard::make()->inline()
-            ->setResizeKeyboard(false)
+            ->setResizeKeyboard(true)
             ->setOneTimeKeyboard(true)
             ->row([
                 Keyboard::button(['text' => $this->itemMenu['menu'][$user->language], 'callback_data' => 'menu']),
@@ -159,7 +159,7 @@ class MenuController extends Controller
             'language' => $menuFields['language'],
         ];
         $reply_markup = Keyboard::make()->inline()
-            ->setResizeKeyboard(false)
+            ->setResizeKeyboard(true)
             ->setOneTimeKeyboard(true)
             ->row([
                 Keyboard::button(['text' => $itemMenu['photo'][$menuFields['language']], 'callback_data' => json_encode(array_merge($menuItemFields, ['type'=>'photo']))]),

@@ -23,7 +23,7 @@ class StartCommand extends Command
     public function handle()
     {
         $reply_markup = Keyboard::make()->inline()
-            ->setResizeKeyboard(false)
+            ->setResizeKeyboard(true)
             ->setOneTimeKeyboard(true)
             ->row([
                 Keyboard::button(['text' => '🇧🇬', 'callback_data' => json_encode(['function' => 'language', 'value' => 'bg'])]),

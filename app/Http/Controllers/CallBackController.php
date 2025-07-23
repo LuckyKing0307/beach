@@ -77,7 +77,7 @@ class CallBackController extends Controller
         $config = AdminConfigs::find($request['item_id']);
         $trigger = 'trigger_' . $request['language'];
         $reply_markup = Keyboard::make()->inline()
-            ->setResizeKeyboard(false)
+            ->setResizeKeyboard(true)
             ->setOneTimeKeyboard(true)
             ->row([
                 Keyboard::button(['text' => $this->itemMenu['back'][$request['language']], 'callback_data' => $config->$trigger]),
@@ -131,7 +131,7 @@ class CallBackController extends Controller
         $config = AdminConfigs::find($request['item_id']);
 
         $reply_markup = Keyboard::make()->inline()
-            ->setResizeKeyboard(false)
+            ->setResizeKeyboard(true)
             ->setOneTimeKeyboard(true)
             ->row([
                 Keyboard::button(['text' => $this->itemMenu['back'][$request['language']], 'callback_data' => $config->$trigger]),
@@ -217,7 +217,7 @@ class CallBackController extends Controller
         $user->on_chat = 1;
         $user->save();
         $reply_markup = Keyboard::make()->inline()
-            ->setResizeKeyboard(false)
+            ->setResizeKeyboard(true)
             ->setOneTimeKeyboard(true)
             ->row([
                 Keyboard::button(['text' => $this->itemMenu['menu'][$user->language], 'callback_data' => 'menu']),
