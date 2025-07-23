@@ -83,6 +83,7 @@ class CallBackController extends Controller
                 Keyboard::button(['text' => $this->itemMenu['back'][$request['language']], 'callback_data' => $config->$trigger]),
                 Keyboard::button(['text' => $this->itemMenu['menu'][$request['language']], 'callback_data' => 'menu']),
             ]);
+        $user = TelegramUser::where(['user_id' => $request['user_id']])->get()->first();
         if ($config->exists()) {
             $medias = [];
             $attachments = json_decode($config->function);
@@ -97,11 +98,13 @@ class CallBackController extends Controller
                     'chat_id' => $request['user_id'],
                     'media' => json_encode($medias),
                 ];
-                $text = 'List of photos';
+                $text = ['en' => 'List of photos', 'bg' => 'Cнимки'];
+                $text = $text[$user->language];
                 $this->telegram::sendMediaGroup($messageData);
             }
             if (count($attachments) < 2 or gettype($attachments) != 'array') {
-                $text = 'There is no photo';
+                $text = ['en' => 'There is no photo', 'bg' => 'Няма снимка'];
+                $text = $text[$user->language];
             }
             $messageData = [
                 'chat_id' => $request['user_id'],
