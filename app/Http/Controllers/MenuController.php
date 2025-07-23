@@ -21,7 +21,7 @@ class MenuController extends Controller
         $this->telegram = $telegram;
         $this->itemMenu = [
             'menu' => ['en' => 'Menu', 'bg' => 'Главно меню'],
-            'back' => ['en' => 'Back', 'bg' => '↩️Назад'],
+            'back' => ['en' => 'Back', 'bg' => '↩️ Обратно'],
             'chat' => ['en' => "You've opened a chat with the admin", 'bg' => 'Отворихте чат с администратора'],
         ];
     }
@@ -94,7 +94,7 @@ class MenuController extends Controller
 
         $itemMenu = [
             'menu' => ['en'=>'Menu','bg'=>'Меню'],
-            'back' => ['en'=>'Back','bg'=>'Назад'],
+            'back' => ['en'=>'Back','bg'=>'Обратно'],
         ];
         $reply_markup = Keyboard::make()->inline()
             ->setResizeKeyboard(true)
