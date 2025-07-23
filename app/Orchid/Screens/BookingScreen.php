@@ -7,6 +7,7 @@ use App\Models\Booking;
 use App\Models\TelegramUser;
 use App\Orchid\Layouts\Booking\BooknigTable;
 use Orchid\Screen\Screen;
+use Telegram\Bot\Keyboard\Keyboard;
 
 class BookingScreen extends Screen
 {
@@ -71,23 +72,20 @@ Please send your phone number using the button below.',
 
         $booking->active = 1;
         $booking->save();
-
+        $keyboard = Keyboard::make()
+            ->resize(true)
+            ->oneTimeKeyboard(true)
+            ->keyboard([
+                [Keyboard::button([
+                    'text' => $text['tel-'.$user->language],
+                    'request_contact' => true,
+                ])]
+            ]);
 
         $data = [
             'user_id' => $booking->user_id,
             'text' => $text[$user->language],
-            'reply_markup' => [
-                'keyboard' => [
-                    [
-                        [
-                            'text' => $text['tel-'.$user->language],
-                            'request_contact' => true,
-                        ]
-                    ]
-                ],
-                'resize_keyboard' => true,
-                'one_time_keyboard' => true,
-            ]
+            'reply_markup' => $keyboard
         ];
 
         $messanger = new MessageController();
