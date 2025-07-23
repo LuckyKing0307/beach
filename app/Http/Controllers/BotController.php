@@ -38,15 +38,15 @@ class BotController extends Controller
                 if (!$user->block){
 
                     $callback = new CallBackController($update->callback_query, $this->telegramAPI);
+                    $menu = new MenuController($update->callback_query->message, $this->telegramAPI);
                     $callback->closeCallback();
                     if (gettype(json_decode($update->callback_query->data,1))!='array'){
-                        $menu = new MenuController($update->callback_query->message, $this->telegramAPI);
                         $menu->isMenuExists($update->callback_query->data);
-                        $menu = new MessageController();
-                        $menu->store($update->callback_query->message,'callback');
                     }else{
                         $callback->store();
                     }
+                    $menu = new MessageController();
+                    $menu->store($update->callback_query->message,'callback');
                 }
             }if (!isset($update->entities) and $update->isType('message')){
                 $user = TelegramUser::where(['user_id' => $update->message->chat?->id])->get()->first();
