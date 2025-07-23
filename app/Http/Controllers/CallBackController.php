@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AdminConfigs;
 use App\Models\Booking;
+use App\Models\Message;
 use App\Models\TelegramUser;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -162,6 +163,13 @@ class CallBackController extends Controller
         $user = TelegramUser::where(['user_id' => $booking->user_id])->get()->first();
         if ($booking->exists()) {
             $booking->day = $request['day'];
+            $data = [
+                'user_id' => $booking->user_id,
+                'message_id' => $booking->id,
+                'type' => 'message',
+                'data' => ['text' => 'Забранировал на '.$request['day']],
+            ];
+            Message::create($data);
         }
         $booking->save();
 
