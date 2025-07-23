@@ -25,6 +25,7 @@ class MessageController extends Controller
         $messageData = [
             'chat_id' => $data['user_id'],
             'text' => $data['text'],
+            'reply_markup' => $data['reply_markup'] ?? null, // безопаснее через null
         ];
         Telegram::sendMessage($messageData);
 //        $user->on_chat = 0;
