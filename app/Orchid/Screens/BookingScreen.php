@@ -70,7 +70,7 @@ Please send your phone number using the button below.',
         ];
         $user = TelegramUser::where(['user_id' => $booking->user_id])->get()->first();
 
-        $keyboard = Keyboard::make()
+        $keyboard = Keyboard::make()->inline()
             ->setResizeKeyboard(true)
             ->setOneTimeKeyboard(true)
             ->row([
