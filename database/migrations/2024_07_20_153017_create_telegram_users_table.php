@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('language')->default('ru');
             $table->boolean('active')->default(1);
             $table->boolean('block')->default(0);
-            $table->boolean('on_chat')->default(1);
+            $table->boolean('on_chat')->default(0);
             $table->timestamps();
         });
     }
