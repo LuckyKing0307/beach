@@ -84,7 +84,7 @@ Please send your phone number using the button below.',
         $data = [
             'user_id' => $booking->user_id,
             'text' => $text[$user->language],
-            'reply_markup' => $keyboard
+//            'reply_markup' => $keyboard
         ];
 
         $messanger = new MessageController();

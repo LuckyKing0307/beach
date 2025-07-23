@@ -9,11 +9,12 @@ use Telegram\Bot\Laravel\Facades\Telegram;
 
 class MessageController extends Controller
 {
-    public function store($request){
+    public function store($request,$type='message'){
         $data = [
             'user_id' => $request->message->chat?->id,
             'message_id' => $request->message->message_id,
             'data' => $request->message,
+            'type' => $type,
         ];
         Message::create($data);
         return response()->json([

@@ -42,6 +42,8 @@ class BotController extends Controller
                     if (gettype(json_decode($update->callback_query->data,1))!='array'){
                         $menu = new MenuController($update->callback_query->message, $this->telegramAPI);
                         $menu->isMenuExists($update->callback_query->data);
+                        $menu = new MessageController();
+                        $menu->store($update->callback_query->message,'callback');
                     }else{
                         $callback->store();
                     }
@@ -69,9 +71,8 @@ class BotController extends Controller
                     if ($user->on_chat){
                         $menu = new MessageController();
                         $menu->store($update);
-                    }else{
-                        $menu->isMenuExists($update->message->text);
                     }
+                    $menu->isMenuExists($update->message->text);
                 }
             }
         }catch (\Exception $e){
