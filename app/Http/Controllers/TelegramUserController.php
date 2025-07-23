@@ -20,6 +20,7 @@ class TelegramUserController extends Controller
                 'user_id' => $request->from?->id,
                 'first_name' => $request->from?->first_name,
                 'username' => $request->from?->username,
+                'on_chat' => 1
             ]);
         }
         return $user;
