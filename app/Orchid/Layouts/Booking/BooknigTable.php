@@ -49,7 +49,8 @@ class BooknigTable extends Table
                 return '<a href="https://t.me/' . ltrim($user->username, '@') . '" target="_blank">@' . $user->username . '</a>';
             }),
             TD::make('chat', 'Open Chat')->render(function (Booking $booking) {
-                $link = route('platform.message.list', ['message'=>$booking->user_id]);
+                $user = TelegramUser::where(['user_id' => $booking->user_id])->get()->first();
+                $link = route('platform.message.list', ['message'=>$user->id]);
                 return "<a href='{$link}' target='_blank'>Open Messages List</a>";
             }),
             TD::make('confirmation','CONFIRMATION')
