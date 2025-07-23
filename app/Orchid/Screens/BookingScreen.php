@@ -61,14 +61,10 @@ class BookingScreen extends Screen
     {
 
         $text = [
-            'bg' => 'Благодарим! Получихме вашето запитване за избраната услуга на посочената дата.
-Започваме обработката му веднага.
-Наш оператор ще се свърже с вас скоро, за да уточни детайлите — час, брой хора и специални изисквания.
-Ще направим всичко възможно, за да организираме услугата удобно и безпроблемно за вас.',
-            'en' => "Thank you! We've received your request for the selected activity on your chosen date.
-    We’re starting to process it right away.
-    Our operator will contact you shortly to clarify the details - time, number of people, and any special requests.
-    We’ll make sure everything is smoothly arranged with the service provider for your comfort and convenience.",
+            'bg' => 'Честито! Вашата резервация е потвърдена! Тук скоро ще се появят параметри на услугата – местоположение и телефон за връзка.
+Моля, изпратете Вашия телефонен номер чрез бутона по-долу.',
+            'en' => 'Congratulations! Your reservation is confirmed! The service details — location and contact phone — will appear here soon.
+Please send your phone number using the button below.',
             'tel-bg' => 'Изпрати телефонния номер',
             'tel-en' => 'Send phone number',
         ];

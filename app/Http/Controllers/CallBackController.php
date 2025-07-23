@@ -157,7 +157,14 @@ class CallBackController extends Controller
 
     protected function booking_day($request)
     {
-        $text = ['en' => "Thank you! you booking is received. Wait please for confirmation during 4 hours", 'bg' => 'Благодаря! Вашето заявление е прието. Изчакайте потвърждение в рамките на 4 часа'];
+        $text = ['en' => "Thank you! We've received your request for the selected activity on your chosen date.
+We’re starting to process it right away.
+Our operator will contact you shortly to clarify the details - time, number of people, and any special requests.
+We’ll make sure everything is smoothly arranged with the service provider for your comfort and convenience.",
+            'bg' => 'Благодарим! Получихме вашето запитване за избраната услуга на посочената дата.
+Започваме обработката му веднага.
+Наш оператор ще се свърже с вас скоро, за да уточни детайлите — час, брой хора и специални изисквания.
+Ще направим всичко възможно, за да организираме услугата удобно и безпроблемно за вас.'];
 
         $booking = Booking::find($request['id']);
         $user = TelegramUser::where(['user_id' => $booking->user_id])->get()->first();
