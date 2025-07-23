@@ -64,8 +64,8 @@ class BookingScreen extends Screen
 Моля, изпратете Вашия телефонен номер чрез бутона по-долу.',
             'en' => 'Congratulations! Your reservation is confirmed! The service details — location and contact phone — will appear here soon.
 Please send your phone number using the button below.',
-            'tel.bg' => 'Изпрати телефонния номер',
-            'tel.en' => 'Send phone number',
+            'tel-bg' => 'Изпрати телефонния номер',
+            'tel-en' => 'Send phone number',
         ];
         $user = TelegramUser::where(['user_id' => $booking->user_id])->get()->first();
 
@@ -80,7 +80,7 @@ Please send your phone number using the button below.',
                 'keyboard' => [
                     [
                         [
-                            'text' => $text['tel'.$user->language],
+                            'text' => $text['tel-'.$user->language],
                             'request_contact' => true,
                         ]
                     ]
