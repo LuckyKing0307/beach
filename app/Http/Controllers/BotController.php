@@ -69,8 +69,8 @@ class BotController extends Controller
                         return;
                     }
                     if ($user->on_chat){
-                        $menu = new MessageController();
-                        $menu->store($update);
+                        $message = new MessageController();
+                        $message->store($update);
                     }
                     $menu->isMenuExists($update->message->text);
                 }
