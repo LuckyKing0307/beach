@@ -37,7 +37,7 @@ class MessageTable extends Table
             TD::make('User', 'USERNAME')
                 ->render(function (Message $message) {
                     $active = TelegramUser::where(['user_id'=>$message->user_id])->get()->first();
-                    return $active->username;
+                    return $active->username ?? $active->username :: $active->first_name;
                 }),
             TD::make('message', 'MESSAGE')->render(function (Message $message){
                 $text = Str::limit($message->data['text'], 30, '...');
